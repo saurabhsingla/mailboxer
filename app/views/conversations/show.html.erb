@@ -1,0 +1,54 @@
+<p> hi <%= @rec_emails %>
+
+<p>
+Conversation Subject - 
+<%= @conv.subject %>
+
+<p>
+<%#= @receiver.email %>
+
+
+<%# @receipts.each do |rec| %>
+
+<%#= User.find(rec.receiver_id).email %>
+
+<%#= rec.deleted %>
+
+<p>
+	<%#= @sender.email %>
+
+<p>
+
+<!-- Message subject -   -->
+<%#= rec.notification.subject %>
+<!-- <p> -->
+<!-- Message text- -->
+<%#= rec.notification.body %>
+
+<%#= rec.notification.each do |notify| %>
+<!-- <p> test -->
+
+	<%# @notif.each do |n| %>
+		<!-- <p><%#= n.id %> -->
+		<!-- <p><%#= n.body %> -->
+			<!-- <p> <%#= n.subject %> -->
+	<%# end %>
+<%# end %>
+
+<%# end %>
+
+<% @notif.each do |n| %>
+
+<p> 
+	<%= User.find(n.sender_id).email %>
+	
+		<p><%#= n.id %>
+			<p> Message subject - 
+		<%= n.subject %>
+
+<p>Message text-
+			<%= n.body %>
+	<% end %>
+
+<%= render 'formMessage' %>
+

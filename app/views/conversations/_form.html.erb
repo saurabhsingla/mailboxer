@@ -1,0 +1,23 @@
+<!-- / = simple_form_for :conversation, url: :conversations do |f|
+/   = f.input :recipients
+/   = f.input :subject
+/   = f.input :body
+/   .form-actions
+/     = f.button :submit, class: 'btn-primary'
+/     = submit_tag 'Cancel', type: :reset, class: 'btn btn-danger'
+
+-->
+ <%= form_for :conversation, :url => {:action => :create} do |f| %>
+
+<%= f.label :subject, 'Subject' %>
+<%= f.text_field :subject %>
+
+<%= f.label :body %>
+<%= f.text_field :body %>
+
+<%= f.label :recipients %>
+<%= f.text_field :recipients %>
+
+<%= f.submit 'Send message' %>
+<%= f.submit 'Cancel', type: :reset %>
+<% end %>
