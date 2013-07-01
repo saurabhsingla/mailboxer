@@ -30,4 +30,6 @@
 	<p> Trash Subject <%= link_to trash.subject, conversation_path(trash.id)  %>
 		<%= link_to 'untrash', untrash_conversation_path(trash.id), :method => :post %>
 
+		<%#= link_to 'permanent delete', trash.delete %>
+
 <% end %>

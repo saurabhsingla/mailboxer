@@ -4,8 +4,9 @@ class ConversationsController < ApplicationController
 
 	def create
 		# debugger
-		@rec_emails = conversation_params(:recipients)
-		# debugger
+		@rec_emails = conversation_params(:recipients).split(',')
+		# debugg
+	
 		@rec = User.where(email: @rec_emails).all
 		# debugger
 
@@ -13,10 +14,12 @@ class ConversationsController < ApplicationController
 			*conversation_params(:body, :subject)).conversation
 
 		redirect_to conversation
+	
 
 	end
 
 	def show
+		# debugger
 		@conv = Conversation.find(params[:id])
 		@notif = Notification.where(:conversation_id => params[:id])
 		# @sender = User.find(@notif.sender_id)
@@ -60,6 +63,11 @@ class ConversationsController < ApplicationController
 
   	def untrash
   		conversation.untrash(current_user)
+  		redirect_to :conversations
+  	end
+
+  	def permanentdel
+  		conversation.delete(current_user)
   		redirect_to :conversations
   	end
 

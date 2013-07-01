@@ -7,8 +7,11 @@ Newmailboxer::Application.routes.draw do
       post 'trash'
       post 'untrash'
       post 'reply'
+      # post 'permanentdel'
     end
   end
+
+  match 'conversations/index' => 'conversations#permanentdel', :as => :perdel
 
 
   # The priority is based upon order of creation:
