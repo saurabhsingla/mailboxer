@@ -1,15 +1,6 @@
-<!-- <p> <h2> All conversations </h2> -->
-	
-<p> <%# @conversations.each do |con| %>
-	<!-- <p> Conversation Subject <%#= link_to con.subject, conversation_path(con.id)  %> -->
-
-	<%# end %>
-
 <p> Start a new Conversation
 
 	<%= link_to 'Start Conversation', :new_conversation %>
-
-
 
 <p>
 <h2> Inbox </h2>
@@ -18,18 +9,16 @@
 	<p> Inbox Subject <%= link_to inbox.subject, conversation_path(inbox.id)  %>
 		<%= link_to 'Move to trash', trash_conversation_path(inbox.id), :method => :post %>
 <% end %>
- <%#= current_user.mailbox.inbox %>
+ 
 <h2> Sentbox </h2>
 <p> <% @sentbox.each do |sentbox| %>
 	<p> Sentbox Subject <%= link_to sentbox.subject, conversation_path(sentbox.id)  %>
 		<%= link_to 'Move to trash', trash_conversation_path(sentbox.id), :method => :post %>
 
-<% end %>
+	<% end %>
 <h2> Trash </h2>
 <p> <% @trash.each do |trash| %>
 	<p> Trash Subject <%= link_to trash.subject, conversation_path(trash.id)  %>
 		<%= link_to 'untrash', untrash_conversation_path(trash.id), :method => :post %>
 
-		<%#= link_to 'permanent delete', trash.delete %>
-
-<% end %>
+	<% end %>

@@ -2,51 +2,32 @@ class ConversationsController < ApplicationController
 	before_filter :authenticate_user!
 	helper_method :mailbox, :conversation
 
+	# This method is for creation of a new conversation
 	def create
-		# debugger
+		
 		@rec_emails = conversation_params(:recipients).split(',')
-		# debugg
-	
 		@rec = User.where(email: @rec_emails).all
-		# debugger
-
 		conversation = current_user.send_message(@rec, 
 			*conversation_params(:body, :subject)).conversation
 
 		redirect_to conversation
-	
-
 	end
 
+	# to show a particular conversation details
 	def show
-		# debugger
+		
 		@conv = Conversation.find(params[:id])
 		@notif = Notification.where(:conversation_id => params[:id])
-		# @sender = User.find(@notif.sender_id)
-
-		# @receipts = @conv.receipts.all
-		# # where(:notification.sender_id => current_user.id)
-		# # @sender = User.find(@conv.sender_id)
-		# @receipts.each do |rec|
-		# @receiver = User.find(rec.receiver_id)	
-		# @sender = User.find(rec.notification.sender_id)
-		# # @recBody = rec.body
-		# # 		@recSubject = rec.subject
-		# end
-
-		# @notif = Notification.where(conversation_id: @conv.id)
-
-		# @notifications = @conv.receipts.notifications
-
-		# @receiver = User.find(@conv.receipts.all)
-		# debugger
 	end
 
+	# to reply on a conversation
 	def reply
 		current_user.reply_to_conversation(conversation, *message_params(:body, :subject))
     	redirect_to conversation
 
 	end
+
+	# this is linked with the index page. It shows all the conversations linked with the current user
 	def index	
 		@conversations = current_user.mailbox.conversations
 
@@ -55,40 +36,51 @@ class ConversationsController < ApplicationController
 		@trash = current_user.mailbox.trash
 	end
 
+	# to trash a particular conversation
 	def trash
-		# debugger
-    conversation.move_to_trash(current_user)
-    redirect_to :conversations
+
+	    conversation.move_to_trash(current_user)
+    	redirect_to :conversations
   	end
 
+  	# to untrash a trashed conversation
   	def untrash
   		conversation.untrash(current_user)
   		redirect_to :conversations
   	end
 
+  	# to permanently delete a conversation. Currently not in use.
   	def permanentdel
   		conversation.delete(current_user)
   		redirect_to :conversations
   	end
 
+  	# to append a conversation based on the id
 	def conversation
-		# debugger
+		
    	 	@conversation ||= mailbox.conversations.find(params[:id])
   	end
 
+  	# fetched the current user mailbox. Provided by the gem
 	def mailbox
 		@mailbox ||= current_user.mailbox
 	end
+
+	# breaks the parameters and passes on to fetch_params function to fetch 
+	# a result based on the parameters passed.
 	def conversation_params(*keys)
     	fetch_params(:conversation, *keys)
   	end
 
+  	# breaks the parameters and passes on to fetch_params function to fetch 
+	# a result based on the parameters passed.
   	def message_params(*keys)
     	fetch_params(:message, *keys)
   	end
 
-  def fetch_params(key, *subkeys)
-    params[key].instance_eval do
+  	# fetches a result based on the parameters passed. 
+  	def fetch_params(key, *subkeys)
+    	params[key].instance_eval do
       case subkeys.size
       when 0 then self
       when 1 then self[subkeys.first]

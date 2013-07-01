@@ -8,7 +8,7 @@
 </head>
 <% if signed_in? %>
 	<%= "Welcome to mailboxer " + current_user.email %>
-	<p>
+	&nbsp; &nbsp;
 	<%= link_to 'Sign_out', :destroy_user_session, method: :delete %>
 	<% else %>
     <p>Please, <%= link_to 'sign in', :new_user_session %></p>
