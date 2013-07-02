@@ -1,0 +1,83 @@
+<h2>Edit <%= resource_name.to_s.humanize %></h2>
+
+<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f| %>
+
+<div class="offset3 span9">
+  <div class="span5" >
+    <div class="box-it">
+      <div class = "heading"  style="text-align:center"> Edit <%= resource_name.to_s.humanize %></div>
+    </div><br/>
+    <div class="box-it">
+    
+        <div class="control-group">
+          <div class="control-label"><%= f.label :email %> </div>
+          <div class='controls'>
+            <%= f.email_field :email %>
+          </div>
+        </div>
+
+        <h4 style="text-align:center">Change Password?</h4>
+        <div class="control-group">
+          <div class="control-label"><%= f.label :password %> </div>
+          <div class='controls'>
+            <%= f.password_field :password, :placeholder=>'New Password'  %>
+          </div>
+        </div>
+        <div class="control-group">
+          <div class="control-label"><%= f.label :password_confirmation %> </div>
+          <div class='controls'>
+            <%= f.password_field :password_confirmation, :placeholder=>'Confirm New Password'   %>
+          </div>
+        </div>
+         <h4 style="text-align:center">Save Changes?</h4>
+        <div class="control-group">
+          <div class="control-label"><%= f.label :current_password %> </div>
+          <div class='controls'>
+            <%= f.password_field :current_password, :placeholder=>'Your Current Password' %>     </div>
+        </div>
+        <div class="control-group">
+          <div class="control-label"><%= f.label ' ' %> </div>
+          <div class='controls'>
+            <%= f.submit "Update", :class=>'btn btn-inverse' %>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <div class="control-label"><%= label_tag "Unhappy?" %></div>
+          <div class='controls'> <a href="<%= registration_path(resource_name) %>" data-confirm="Are you sure?" data-method="<%= :delete %>"><h4>  Cancel My Account <i class='icon-remove-circle'></i></h4></a>
+          </div>
+        </div>
+        <div class="control-group">
+          <div class="control-label"><%= label_tag ' ' %> </div>
+          <div class='controls'>
+            <%= link_to "GO BACK", :back , :style=>"font-size:16px; font-weight:bold;"%>
+          </div>
+        </div>
+    </div>
+  </div>
+  <div class="span3" >
+    <div class="row-fluid">
+      <div class="box-it">
+        <div class = "heading"  style="text-align:center"> Profile Picture</div>
+      </div><br/>
+      <div class="box-it">
+       <div align="center">
+          <%= image_tag @user.user_image(:original), :id=>'profile_pic' %>
+          <%= f.file_field :profile_pic %>
+        </div>
+      </div>
+    </div><br/>
+    <%  if resource.errors.any?  %>
+      <div class="row-fluid">
+        <div class="box-it" style="background-color:#250517;">
+          <div align="center">
+              <%= devise_error_messages! %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+</div>
+</div>
+
+  <% end %> 

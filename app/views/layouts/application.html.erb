@@ -10,6 +10,7 @@
 	<%= "Welcome to mailboxer " + current_user.email %>
 	&nbsp; &nbsp;
 	<%= link_to 'Sign_out', :destroy_user_session, method: :delete %>
+  <%= link_to 'Edit profile', :edit_user_registration %>
 	<% else %>
     <p>Please, <%= link_to 'sign in', :new_user_session %></p>
     <p>or, <%= link_to 'sign up', :new_user_registration %></p>
