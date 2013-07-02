@@ -5,7 +5,7 @@
 
 <p>
 
-<b> Conversation Subject - </b>
+<b> <u> Conversation Subject</u> - </b>
 <%= @conv.subject %>
 
 <p>
@@ -15,10 +15,10 @@
 <p> 
 	<b><%= User.find(n.sender_id).email %> </b>
 	
-		<p> Message subject - 
-		<%= n.subject %>
+		<!-- <p> Message subject -  -->
+		<%#= n.subject %>
 
-<p> Message text -
+<!-- <p> Message text - -->
 			<%= n.body %>
 	<% end %>
 

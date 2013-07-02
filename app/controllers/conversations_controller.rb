@@ -22,7 +22,7 @@ class ConversationsController < ApplicationController
 
 	# to reply on a conversation
 	def reply
-		current_user.reply_to_conversation(conversation, *message_params(:body, :subject))
+		current_user.reply_to_conversation(conversation, *message_params(:body, ""))
     	redirect_to conversation
 
 	end

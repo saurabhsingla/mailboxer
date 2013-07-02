@@ -1,9 +1,9 @@
 <%= form_for :message, url:[:reply, conversation] do |f| %>
 	<p>
-	<%= f.label :subject %>
-	<%= f.text_field :subject %>
+	<%#= f.label :subject %>
+	<%#= f.text_field :subject %>
 	<p>
-	<%= f.label :body %>
+	<%= f.label :body, "Reply" %>
 	<%= f.text_field :body %>
 
 	<%= f.submit %>
