@@ -40,6 +40,20 @@ class ConversationsController < ApplicationController
 	def trash
 
 	    conversation.move_to_trash(current_user)
+	    # Completely delete the conversation if all the participants of the conversation have
+	    # trashed the conversation.
+	    if_trashed = false
+	    conversation.participants.each do |participient|
+	    	if_trashed = conversation.is_completely_trashed?(participient)
+	    	
+	    	if !if_trashed
+	    		break
+	    	end
+	    end
+	    
+	    if if_trashed
+	    	conversation.messages.destroy_all
+	    end
     	redirect_to :conversations
   	end
 
