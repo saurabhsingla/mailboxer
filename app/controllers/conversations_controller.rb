@@ -1,6 +1,7 @@
 class ConversationsController < ApplicationController
 	before_filter :authenticate_user!
 	helper_method :mailbox, :conversation
+	include ConversationsHelper
 
 	# This method is for creation of a new conversation
 	def create
@@ -15,10 +16,25 @@ class ConversationsController < ApplicationController
 
 	# to show a particular conversation details
 	def show
-		
 		@conv = Conversation.find(params[:id])
+
+		# make is_read true when the current user has opened the conversation
+		@conv.receipts.each do |receipt|
+			
+			if receipt.receiver_id == current_user.id
+				
+				receipt.is_read = true
+				receipt.save
+				
+			end
+		end
+
+		# method called from ConversationsHelper
+		@creationDate = createDate(@conv.created_at)
+		
 		@notif = Notification.where(:conversation_id => params[:id])
 	end
+
 
 	# to reply on a conversation
 	def reply
@@ -29,9 +45,10 @@ class ConversationsController < ApplicationController
 
 	# this is linked with the index page. It shows all the conversations linked with the current user
 	def index	
-		@conversations = current_user.mailbox.conversations
+		#@conversations = current_user.mailbox.conversations
 
 		@inbox = current_user.mailbox.inbox
+		# debugger
 		@sentbox = current_user.mailbox.sentbox
 		@trash = current_user.mailbox.trash
 	end

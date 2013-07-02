@@ -1,3 +1,4 @@
+<%= link_to 'Move to trash', trash_conversation_path(@conv.id), :method => :post %>
 <p> <b> Chat participants -> </b>
 	<% @conv.recipients.each do |rec| %>
 	<%= rec.email %>
@@ -8,19 +9,18 @@
 <b> <u> Conversation Subject</u> - </b>
 <%= @conv.subject %>
 
+<p>	Started by <b> <%= @conv.originator.email %> </b> on <b> 
+	<%= @creationDate %> </b>
 <p>
 
 <% @notif.each do |n| %>
 
 <p> 
 	<b><%= User.find(n.sender_id).email %> </b>
-	
-		<!-- <p> Message subject -  -->
-		<%#= n.subject %>
+			<p>
+			<%= n.body %> &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<%= date = createDateTime(n.updated_at) %>
 
-<!-- <p> Message text - -->
-			<%= n.body %>
-			
 	<% end %>
 
 <%= render 'formMessage' %>

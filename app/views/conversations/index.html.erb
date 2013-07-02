@@ -6,19 +6,50 @@
 <h2> Inbox </h2>
 
 <% @inbox.each do |inbox| %>
-	<p> Inbox Subject <%= link_to inbox.subject, conversation_path(inbox.id)  %>
-		<%= link_to 'Move to trash', trash_conversation_path(inbox.id), :method => :post %>
+	<%# if inbox.is_read? %>
+	<% bold = false %>
+	<% inbox.receipts.each do |receipt| %>
+		<% if !receipt.is_read? && receipt.receiver_id == current_user.id %>
+		<% bold = true %>
+		<% break %>
+		<% end %>
+	<% end %>
+	<p> 
+	<% if bold %>
+	<b> <%= link_to inbox.subject, conversation_path(inbox.id)  %> </b>
+	<% else %> 
+	<%= link_to inbox.subject, conversation_path(inbox.id)  %>
+	<% end %> 
+	
+		<%#= link_to 'Move to trash', trash_conversation_path(inbox.id), :method => :post %>
+		<%#= inbox.created_at %>
+		<%# currentTime = %>
+
+
 <% end %>
  
 <h2> Sentbox </h2>
 <p> <% @sentbox.each do |sentbox| %>
-	<p> Sentbox Subject <%= link_to sentbox.subject, conversation_path(sentbox.id)  %>
-		<%= link_to 'Move to trash', trash_conversation_path(sentbox.id), :method => :post %>
+	<% bold = false %>
+	<% sentbox.receipts.each do |receipt| %>
+		<% if !receipt.is_read? && receipt.receiver_id == current_user.id %>
+		<% bold = true %>
+		<% break %>
+		<% end %>
+	<% end %>
+	<p> 
+		<% if bold %> 
+		<b> <%= link_to sentbox.subject, conversation_path(sentbox.id)  %> </b>
+		<% else %> 
+		<%= link_to sentbox.subject, conversation_path(sentbox.id)  %>
+		<% end %>
+		<%#= link_to 'Move to trash', trash_conversation_path(sentbox.id), :method => :post %>
 
 	<% end %>
 <h2> Trash </h2>
 <p> <% @trash.each do |trash| %>
-	<p> Trash Subject <%= link_to trash.subject, conversation_path(trash.id)  %>
+	<p>  <%#= link_to trash.subject, conversation_path(trash.id)  %>
+		 <%= trash.subject %> 
 		<%= link_to 'untrash', untrash_conversation_path(trash.id), :method => :post %>
 
 	<% end %>

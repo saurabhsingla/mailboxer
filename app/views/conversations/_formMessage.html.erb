@@ -3,9 +3,8 @@
 	<%#= f.label :subject %>
 	<%#= f.text_field :subject %>
 	<p>
-	<%= f.label :body, "Reply" %>
-	<%= f.text_field :body %>
-
-	<%= f.submit %>
+	<%= f.text_area :body, :cols=>28, :rows=>3, :placeholder=>'Type your message here' %>
+	<p>
+	<%= f.submit 'Reply' %>
 
 <% end %>
