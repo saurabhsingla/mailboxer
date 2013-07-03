@@ -1,0 +1,21 @@
+<% @convs.each do |conv| %>
+	<% bold = false %>
+	<% conv.receipts.each do |receipt| %>
+		<% if !receipt.is_read? && receipt.receiver_id == current_user.id %>
+			<% bold = true %>
+			<% break %>
+		<% end %>
+	<% end %>
+<p> 
+	<% if bold %>
+		<b> <%= link_to conv.subject, conversation_path(conv.id)  %> </b>
+	<% else %> 
+		<%= link_to conv.subject, conversation_path(conv.id)  %>
+	<% end %> 
+	
+		<%#= link_to 'Move to trash', trash_conversation_path(inbox.id), :method => :post %>
+		<%#= inbox.created_at %>
+		<%# currentTime = %>
+
+
+<% end %>

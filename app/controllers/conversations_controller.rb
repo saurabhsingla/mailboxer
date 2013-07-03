@@ -14,6 +14,47 @@ class ConversationsController < ApplicationController
 		redirect_to conversation
 	end
 
+	def displayinbox
+
+		@convs = current_user.mailbox.inbox
+		@countInboxConvUnread = 0
+		@convs.each do |inbox|
+			inbox.receipts.each do |receipt|
+				if !receipt.is_read? && receipt.receiver_id == current_user.id
+					@countInboxConvUnread = @countInboxConvUnread + 1
+					break
+				end
+			end			
+		end
+		# debugger
+	end
+
+	def displaysentbox
+		@convs = current_user.mailbox.sentbox
+		@countSentboxConvUnread = 0
+		@convs.each do |sentbox|
+			sentbox.receipts.each do |receipt|
+				if !receipt.is_read? && receipt.receiver_id == current_user.id
+					@countSentboxConvUnread = @countSentboxConvUnread + 1
+					break
+				end
+			end			
+		end
+	end
+
+	def displaytrash
+		@convs = current_user.mailbox.trash
+		@countTrashConvUnread = 0
+		@convs.each do |trash|
+			trash.receipts.each do |receipt|
+				if !receipt.is_read? && receipt.receiver_id == current_user.id
+					@countTrashConvUnread = @countTrashConvUnread + 1
+					break
+				end
+			end			
+		end
+	end
+
 	# to show a particular conversation details
 	def show
 		@conv = Conversation.find(params[:id])
@@ -28,9 +69,6 @@ class ConversationsController < ApplicationController
 				
 			end
 		end
-
-		# method called from ConversationsHelper
-		# @creationDate = createDate(@conv.created_at)
 		
 		@notif = Notification.where(:conversation_id => params[:id])
 	end
@@ -45,8 +83,6 @@ class ConversationsController < ApplicationController
 
 	# this is linked with the index page. It shows all the conversations linked with the current user
 	def index	
-		#@conversations = current_user.mailbox.conversations
-
 		@inbox = current_user.mailbox.inbox
 		@countInboxConvUnread = 0
 		@inbox.each do |inbox|
@@ -57,7 +93,7 @@ class ConversationsController < ApplicationController
 				end
 			end			
 		end
-		# debugger
+		
 		@sentbox = current_user.mailbox.sentbox
 		@countSentboxConvUnread = 0
 		@sentbox.each do |sentbox|

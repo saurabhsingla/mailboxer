@@ -8,6 +8,9 @@ Newmailboxer::Application.routes.draw do
       post 'untrash'
       post 'reply'
       post 'move_to_trash'
+      get 'displayinbox'
+      get 'displaysentbox'
+      get 'displaytrash'
     end
   end
 
