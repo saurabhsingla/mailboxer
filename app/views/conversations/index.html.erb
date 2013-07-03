@@ -3,22 +3,22 @@
 	<%= link_to 'Start Conversation', :new_conversation %>
 
 <p>
-<h2> Inbox </h2>
+<h2> Inbox  ( <%= @countInboxConvUnread %>  unread conversations) </h2>
 
 <% @inbox.each do |inbox| %>
 	<%# if inbox.is_read? %>
 	<% bold = false %>
 	<% inbox.receipts.each do |receipt| %>
 		<% if !receipt.is_read? && receipt.receiver_id == current_user.id %>
-		<% bold = true %>
-		<% break %>
+			<% bold = true %>
+			<% break %>
 		<% end %>
 	<% end %>
 	<p> 
 	<% if bold %>
-	<b> <%= link_to inbox.subject, conversation_path(inbox.id)  %> </b>
+		<b> <%= link_to inbox.subject, conversation_path(inbox.id)  %> </b>
 	<% else %> 
-	<%= link_to inbox.subject, conversation_path(inbox.id)  %>
+		<%= link_to inbox.subject, conversation_path(inbox.id)  %>
 	<% end %> 
 	
 		<%#= link_to 'Move to trash', trash_conversation_path(inbox.id), :method => :post %>
@@ -28,7 +28,7 @@
 
 <% end %>
  
-<h2> Sentbox </h2>
+<h2> Sentbox ( <%= @countSentboxConvUnread %>  unread conversations) </h2>
 <p> <% @sentbox.each do |sentbox| %>
 	<% bold = false %>
 	<% sentbox.receipts.each do |receipt| %>
@@ -46,10 +46,23 @@
 		<%#= link_to 'Move to trash', trash_conversation_path(sentbox.id), :method => :post %>
 
 	<% end %>
-<h2> Trash </h2>
-<p> <% @trash.each do |trash| %>
-	<p>  <%#= link_to trash.subject, conversation_path(trash.id)  %>
-		 <%= trash.subject %> 
+<h2> Trash ( <%= @countTrashConvUnread %>  unread conversations) </h2>
+	
+	<p> <% @trash.each do |trash| %>
+		<% bold = false %>
+		<% trash.receipts.each do |receipt| %>
+			<% if !receipt.is_read? && receipt.receiver_id == current_user.id %>
+				<% bold = true %>
+				<% break %>
+			<% end %>
+		<% end %>
+		<p>  <%#= link_to trash.subject, conversation_path(trash.id)  %>
+
+		<% if bold %> 
+			<b> <%= trash.subject %> </b>
+		<% else %>
+			<%= trash.subject %>
+		<% end %>
 		<%= link_to 'untrash', untrash_conversation_path(trash.id), :method => :post %>
 
 	<% end %>
