@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
   if profile_pic.present?
     return profile_pic.url(size)
   else
-    return "/assets/default_profilepic_#{size}.png"
+    return "/assets/default_profilepic_#{size}.jpg"
   end
 end
 
