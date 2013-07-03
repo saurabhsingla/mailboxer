@@ -30,7 +30,7 @@ class ConversationsController < ApplicationController
 		end
 
 		# method called from ConversationsHelper
-		@creationDate = createDate(@conv.created_at)
+		# @creationDate = createDate(@conv.created_at)
 		
 		@notif = Notification.where(:conversation_id => params[:id])
 	end

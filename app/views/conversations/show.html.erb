@@ -9,8 +9,10 @@
 <b> <u> Conversation Subject</u> - </b>
 <%= @conv.subject %>
 
-<p>	Started by <b> <%= @conv.originator.email %> </b> on <b> 
-	<%= @creationDate %> </b>
+<p>	Started by <b> <%= @conv.originator.email %> </b> 
+	<%#= @creationDate %> 
+	<%= time_ago_in_words(@conv.created_at) %> ago
+
 <p>
 
 <% @notif.each do |n| %>
@@ -20,7 +22,8 @@
 	<b><%= User.find(n.sender_id).email %> </b>
 			<p>
 			<%= n.body %> &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<%= date = createDateTime(n.updated_at) %>
+			<%= time_ago_in_words(n.updated_at) %> ago
+			<%#= date = createDateTime(n.updated_at) %>
 
 	<% end %>
 
