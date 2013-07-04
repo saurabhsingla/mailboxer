@@ -2,20 +2,19 @@ Newmailboxer::Application.routes.draw do
   devise_for :users
 
   resources :conversations do 
-
     member do
       post 'trash'
       post 'untrash'
       post 'reply'
       post 'move_to_trash'
-      get 'displayinbox'
-      get 'displaysentbox'
-      get 'displaytrash'
     end
   end
 
-  # match 'conversations/index' => 'conversations#permanentdel', :as => :perdel
+  match 'displayinbox_conversation', to: 'conversations#displayinbox', via: [:get]
 
+  match 'displaysentbox_conversation', to: 'conversations#displaysentbox', via: [:get]
+
+  match 'displaytrash_conversation', to: 'conversations#displaytrash', via: [:get]
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
