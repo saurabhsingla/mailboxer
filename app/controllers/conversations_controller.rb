@@ -58,15 +58,12 @@ class ConversationsController < ApplicationController
 	# to show a particular conversation details
 	def show
 		@conv = Conversation.find(params[:id])
-
 		# make is_read true when the current user has opened the conversation
 		@conv.receipts.each do |receipt|
 			
-			if receipt.receiver_id == current_user.id
-				
+			if receipt.receiver_id == current_user.id				
 				receipt.is_read = true
-				receipt.save
-				
+				receipt.save				
 			end
 		end
 		
@@ -83,38 +80,7 @@ class ConversationsController < ApplicationController
 
 	# this is linked with the index page. It shows all the conversations linked with the current user
 	def index	
-		@inbox = current_user.mailbox.inbox
-		@countInboxConvUnread = 0
-		@inbox.each do |inbox|
-			inbox.receipts.each do |receipt|
-				if !receipt.is_read? && receipt.receiver_id == current_user.id
-					@countInboxConvUnread = @countInboxConvUnread + 1
-					break
-				end
-			end			
-		end
 		
-		@sentbox = current_user.mailbox.sentbox
-		@countSentboxConvUnread = 0
-		@sentbox.each do |sentbox|
-			sentbox.receipts.each do |receipt|
-				if !receipt.is_read? && receipt.receiver_id == current_user.id
-					@countSentboxConvUnread = @countSentboxConvUnread + 1
-					break
-				end
-			end			
-		end
-
-		@trash = current_user.mailbox.trash
-		@countTrashConvUnread = 0
-		@trash.each do |trash|
-			trash.receipts.each do |receipt|
-				if !receipt.is_read? && receipt.receiver_id == current_user.id
-					@countTrashConvUnread = @countTrashConvUnread + 1
-					break
-				end
-			end			
-		end
 	end
 
 	# to trash a particular conversation

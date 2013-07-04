@@ -1,17 +1,4 @@
-
+<div style="float:left;margin-left:40px;">
 <h1>
 	Welcome to Mailbox </h1>
-
-<p>
-	<h3> <%= link_to 'Inbox', displayinbox_conversation_path(1) %> 
-		(<%= @countInboxConvUnread %>  unread conversations) </h3> 
-
-<p>
- 	<h3> <%= link_to 'Sentbox', displaysentbox_conversation_path(1) %> (<%= @countSentboxConvUnread %>  unread conversations) </h3>
-
-<p>
-	<h3><%= link_to 'Trash', displaytrash_conversation_path(1) %> (<%= @countTrashConvUnread %>  	unread conversations) </h3>
-
-<p>
- 		<%= link_to 'Start Conversation', :new_conversation %>
-	
+</div>

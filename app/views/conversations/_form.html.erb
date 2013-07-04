@@ -1,14 +1,38 @@
+<div style="width:500px;height:300px;padding:30px;border:1px solid #ccc">
 <%= form_for :conversation, :url => {:action => :create} do |f| %>
-
-<%= f.label :subject, 'Subject' %>
-<%= f.text_field :subject %>
-
-<%= f.label :body %>
-<%= f.text_field :body %>
-
-<%= f.label :recipients %>
-<%= f.text_field :recipients %>
-
-<%= f.submit 'Send message' %>
-<%= f.submit 'Cancel', type: :reset %>
+<table>
+	<tr>
+		<td>
+			<%= f.label :subject, 'Subject' %>
+		</td>
+		<td>		
+			<%= f.text_field :subject %>
+		</td>
+	</tr>		
+	<tr>
+		<td>
+			<%= f.label :Body %>
+		</td>
+		<td>	
+			<%= f.text_field :body %>
+		</td>
+	</tr>		
+	<tr>
+		<td>
+			<%= f.label :recipients %>
+		</td>
+		<td>	
+			<%= f.text_field :recipients %>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<%= f.submit 'Send message' %>
+		</td>
+		<td>	
+			<%= f.submit 'Cancel', type: :reset %>
+		</td>
+	</tr>
+</table>			
 <% end %>
+</div>

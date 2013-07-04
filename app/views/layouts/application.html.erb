@@ -6,19 +6,39 @@
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
 </head>
-<% if signed_in? %>
-	<%= "Welcome to mailboxer " + current_user.email %>
-	&nbsp; &nbsp;
-	<%= link_to 'Sign_out', :destroy_user_session, method: :delete %>
-  <%= link_to 'Edit profile', :edit_user_registration %>
-	<% else %>
-    <p>Please, <%= link_to 'sign in', :new_user_session %></p>
-    <p>or, <%= link_to 'sign up', :new_user_registration %></p>
-  
-	<% end %>
-  <p><%= link_to 'Home', :root %></p>
-<body>
 
+
+<body>
+<div style="border:1px solid #ccc;background-color:#08c;height:20px;padding:5px;">
+  <% if signed_in? %>
+<div style="float:left;">
+   <%= "Welcome to mailboxer " + current_user.email %></div>
+  &nbsp; &nbsp;
+  <div style="float:right;">
+     <%= link_to 'Home', :root %>
+  <%= link_to 'Sign out', :destroy_user_session, method: :delete %>
+  <%= link_to 'Edit profile', :edit_user_registration %></div>
+  <% else %>
+  <div style="float:right;">
+    Please, <%= link_to 'sign in', :new_user_session %>
+    or, <%= link_to 'sign up', :new_user_registration %></div>
+  
+  <% end %>
+</div>
+<% if signed_in? %>
+<div style="border:1px solid #ccc;width:20%;height:400px;padding:30px;float:left;">
+
+  <%= link_to 'Inbox', displayinbox_conversation_path(1) %> 
+    (<%= unreadinboxnumber %>  unread conversations) <br/><br/><br/>
+
+   <%= link_to 'Sentbox', displaysentbox_conversation_path(1) %> (<%= unreadsentnumber %>  unread conversations) <br/><br/><br/>
+
+
+  <%= link_to 'Trash', displaytrash_conversation_path(1) %> (<%= unreadtrashnumber %>   unread conversations) <br/><br/><br/>
+
+    <%= link_to 'Start Conversation', :new_conversation %>
+  </div>
+  <% end %>
 <%= yield %>
 
 </body>

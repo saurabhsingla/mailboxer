@@ -1,31 +1,46 @@
-<%= link_to 'Move to trash', trash_conversation_path(@conv.id), :method => :post %>
-<p> <b> Chat participants -> </b>
-	<% @conv.recipients.each do |rec| %>
-	<%= rec.email %>
-	<% end %>
-
-<p>
-
-<b> <u> Conversation Subject</u> - </b>
+<div style="float:left;margin-left:40px;">
+<!--  <b> Chat participants -> </b>
+	<%# @conv.recipients.each do |rec| %>
+	<%#= rec.email %>
+	<%# end %>
+<br/><br/><br/> -->
+<br/><br/>
+<div style="width:600px;border:1px solid #ccc;padding:30px;height:600px;">
+<div style="float:left;"><b> <u> Conversation Subject</u> - </b>
 <%= @conv.subject %>
+</div>
+<div style="float:right;">
+	<%= link_to image_tag("trash.png",:width=>40), trash_conversation_path(@conv.id), :method => :post %>
+</div>
 
 <p>	Started by <b> <%= @conv.originator.email %> </b> 
-	<%#= @creationDate %> 
+	<%= @creationDate %> 
 	<%= time_ago_in_words(@conv.created_at) %> ago
 
-<p>
+<br/><br/>
 
 <% @notif.each do |n| %>
 
-<p> 
-	<%= image_tag User.find(n.sender_id).user_image(:thumb) %>
-	<b><%= User.find(n.sender_id).email %> </b>
-			<p>
-			<%= n.body %> &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<div>
+	<div style="float:left;">
+		<%= image_tag User.find(n.sender_id).user_image(:thumb),:height=>50 %>
+	</div>
+	<div style="float;left;">
+		<b><%= User.find(n.sender_id).email %></b> <br/>
+			<%= n.body %> 
+			<div style="float:right;font-size:14px;color:#ccc;">
 			<%= time_ago_in_words(n.updated_at) %> ago
+	</div>
+	</div><br/>
+	
 			<%#= date = createDateTime(n.updated_at) %>
 
 	<% end %>
-
+</div>	
+<br/><br/>
+<div>
 <%= render 'formMessage' %>
-
+</div>
+</div>
+</div>
+</div>
