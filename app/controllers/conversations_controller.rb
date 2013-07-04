@@ -16,7 +16,7 @@ class ConversationsController < ApplicationController
 
 	def displayinbox
 
-		@convs = current_user.mailbox.inbox
+		@convs = current_user.mailbox.inbox.paginate(:page => params[:page], :per_page => 10)
 		@countInboxConvUnread = 0
 		@convs.each do |inbox|
 			inbox.receipts.each do |receipt|
@@ -30,7 +30,7 @@ class ConversationsController < ApplicationController
 	end
 
 	def displaysentbox
-		@convs = current_user.mailbox.sentbox
+		@convs = current_user.mailbox.sentbox.paginate(:page => params[:page], :per_page => 10)
 		@countSentboxConvUnread = 0
 		@convs.each do |sentbox|
 			sentbox.receipts.each do |receipt|
@@ -43,7 +43,7 @@ class ConversationsController < ApplicationController
 	end
 
 	def displaytrash
-		@convs = current_user.mailbox.trash
+		@convs = current_user.mailbox.trash.paginate(:page => params[:page], :per_page => 10)
 		@countTrashConvUnread = 0
 		@convs.each do |trash|
 			trash.receipts.each do |receipt|
