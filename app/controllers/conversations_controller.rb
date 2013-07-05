@@ -58,6 +58,10 @@ class ConversationsController < ApplicationController
 	# to show a particular conversation details
 	def show
 		@conv = Conversation.find(params[:id])
+		unless @conv.is_participant?(current_user)
+        	flash[:alert] = "You do not have permission to view that conversation."
+        	return redirect_to root_path
+      	end
 		# make is_read true when the current user has opened the conversation
 		@conv.receipts.each do |receipt|
 			
