@@ -1,5 +1,7 @@
-<h2>Sign up</h2>
+<h2 align="center">Sign up</h2>
+<hr>
 
+<div style="margin-left:30%;background-color:#099;width:500px;height:300px;padding:30px;border:5px solid #fff">
 <%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
   <%= f.error_notification %>
 
@@ -15,5 +17,8 @@
     <%= f.button :submit, "Sign up" %>
   </div>
 <% end %>
-
+</div><hr>
+<div style="margin-left:25%;width:50%;background-color:#08c;padding:20px;text-align:center;border:5px solid #fff;">
 <%= render "links" %>
+</div>
+
