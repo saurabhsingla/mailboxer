@@ -7,35 +7,32 @@
 <br/><br/>
 
 <div style="width:600px;border:1px solid #ccc;padding:20px;height:600px;">
-	<div style="float:left;"><div style="font-size:12px;color:#ccc;">
+	<div style="float:left;"><div style="font-size:12px;color:#ccc;float:left;">
 
 	Started by <b> <%= @conv.originator.email %> </b> 
 	<%= @creationDate %> 
 	<%= time_ago_in_words(@conv.created_at) %> ago
-</div><br/>
+</div>
 <div style="float:left;">
-<b><%= @conv.subject %></b>
+&nbsp;<h4 style="display:inline;"><%= @conv.subject %></h4>
 </div></div>
 <div style="float:right;">
-	<%= link_to image_tag("trash.png",:width=>40), trash_conversation_path(@conv.id), :method => :post %>
-</div><br/><br/>
+	<%= link_to image_tag("trash.png",:width=>30), trash_conversation_path(@conv.id), :method => :post %>
+</div>
 
 
-<br/><br/>
+<br/><br/><hr>
 <%#= form_for :message, url:[:reply, conversation] do |f| %>
 <% @notif.each do |n| %>
 	<% if !n.is_trashed?(current_user) %>
-	<div style="float:right;">
-	<%= link_to image_tag("trash.png",:width=>40), 
-	trashnotif_conversation_path(n), :method => :post, :params => {:notif_id => n} %>
-	</div><br/><br/>
+	
 	<div>
-		<div style="float:left;">
+		<!-- <div style="float:left;"> -->
 			<%#= image_tag User.find(n.sender_id).user_image(:thumb),:height=>50 %>
-		</div>
-		<div style="float;left;">
+		<!-- </div> -->
+		<div>
 
-			<b>From: &nbsp;<%= User.find(n.sender_id).email %></b> <br/>
+			<div id="slideoutmessage"><b>From: &nbsp;<%= User.find(n.sender_id).email %></b> </div><br/>
 			<!-- <b>To: &nbsp; -->
 				<%# @conv.recipients.each do |rec| %>
 				<!-- <%#= rec.email %>,  -->
@@ -43,19 +40,25 @@
 			<!-- </b>	 -->
 			 <!-- <br/> -->
 				<!-- Subject: <%= n.subject %> <br/> -->
-				Body: <%= n.body %> <br/>
+				<div id="message" style="display:none;">
+				<div style="float:left;">Body: <%= n.body %> </div>
+				<div style="float:right;">
+					<%= link_to image_tag("trash.png",:width=>30), 
+					trashnotif_conversation_path(n), :method => :post, :params => {:notif_id => n} %>
+					<div style="display:inline" id="formmessageslideout"><img src="/assets/mail-reply.png"/ width="30"></div>	
+				</div>
 				 
 				<div style="float:right;font-size:14px;color:#ccc;">
 					<%= time_ago_in_words(n.updated_at) %> ago
-				</div> &nbsp;
-		<div style="float:right;">
+				</div> &nbsp;<br><br>
+		<div id="formmessage" style="display:none;">
 			<%#= text_field :body , :size => 150%>
 			<%#= text_area :body, :cols=>28, :rows=>3, :placeholder=>'Type your message here' 
 			%>
 			<%#= link_to 'Reply', replysingle_conversation_path, 
 			:params => {:conv_id => '2'} %>
 			<%= render 'formMessage' %>
-			&nbsp;&nbsp;</div>
+			&nbsp;&nbsp;</div></div><br><br><hr>
 		</div><br/>
 	
 		
@@ -71,3 +74,28 @@
 </div>
 </div>
 </div>
+
+
+<script>
+$(document).ready(function(){
+	$('#slideoutmessage').click(function(){
+		$('#message').slideToggle("fast");
+
+	});
+
+
+});
+
+</script>
+
+<script>
+$(document).ready(function(){
+	$('div#formmessageslideout').click(function(){
+		$('div#formmessage').slideToggle("fast");
+
+	});
+
+
+});
+
+</script>
