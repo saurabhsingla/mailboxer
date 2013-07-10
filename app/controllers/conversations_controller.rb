@@ -43,6 +43,16 @@ class ConversationsController < ApplicationController
 	end
 
 	def displaytrash
+		@abcd = current_user.mailbox.conversations.all
+		@abcd.each do |conv|
+			conv.receipts do |rec|
+				if rec.is_trashed && rec.receiver_id == current_user.id
+
+					# to be continued...
+
+				end
+			end
+		end
 		@convs = current_user.mailbox.trash.paginate(:page => params[:page], :per_page => 10)
 		@countTrashConvUnread = 0
 		@convs.each do |trash|
@@ -72,12 +82,26 @@ class ConversationsController < ApplicationController
 		end
 		
 		@notif = Notification.where(:conversation_id => params[:id])
-	end
+		# @notif.each do |noti|
+		# 	noti.receipts.each do |rec|
+		# 		if rec.is_trashed?
 
+		# 	end
+
+		# end
+	end
 
 	# to reply on a conversation
 	def reply
-		current_user.reply_to_conversation(conversation, *message_params(:body, ""))
+		# @originalConv = conversation
+		if message_params(:subject).empty?
+			current_user.reply_to_conversation(conversation, 
+			*message_params(:body, ""), should_untrash=false)
+		else
+			current_user.reply_to_conversation(conversation, 
+			*message_params(:body, :subject), should_untrash=false)
+
+		end
     	redirect_to conversation
 
 	end
@@ -85,6 +109,14 @@ class ConversationsController < ApplicationController
 	# this is linked with the index page. It shows all the conversations linked with the current user
 	def index	
 		
+	end
+
+	def trashnotif
+		notificationToBeDeleted = Notification.find(params[:id])
+		
+		notificationToBeDeleted.move_to_trash(current_user)
+		conversation = Conversation.find(notificationToBeDeleted.conversation_id)
+		redirect_to conversation
 	end
 
 	# to trash a particular conversation

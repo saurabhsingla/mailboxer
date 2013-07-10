@@ -7,6 +7,9 @@ Newmailboxer::Application.routes.draw do
       post 'untrash'
       post 'reply'
       post 'move_to_trash'
+
+      post 'trashnotif'
+      # get 'replysingle'
     end
   end
 
@@ -15,6 +18,8 @@ Newmailboxer::Application.routes.draw do
   match 'displaysentbox_conversation', to: 'conversations#displaysentbox', via: [:get]
 
   match 'displaytrash_conversation', to: 'conversations#displaytrash', via: [:get]
+
+  # match 'replysingle_conversation', to: 'conversations#replysingle', via: [:get]
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

@@ -1,22 +1,57 @@
-<% @convs.each do |conv| %>
-	<% bold = false %>
-	<% conv.receipts.each do |receipt| %>
-		<% if !receipt.is_read? && receipt.receiver_id == current_user.id %>
-			<% bold = true %>
-			<% break %>
-		<% end %>
-	<% end %>
 
-	<% if bold %>
-		<b> <%= link_to conv.subject, conversation_path(conv.id)  %> </b>
-	<% else %> 
-		<%= link_to conv.subject, conversation_path(conv.id)  %>
-	<% end %> 
-	
 		<%#= link_to 'Move to trash', trash_conversation_path(inbox.id), :method => :post %>
 		<%#= inbox.created_at %>
 		<%# currentTime = %>
 
+	<table border = '0'>
+		<tr>
+			<th></th>
+			<th>Sender</th>
+			<th>Subject</th>
+			<th>Messages</th>
+			<th> </th> 
+		</tr>
+			<% @convs.each do |conv| %>
+				<% bold = false %>
+				<% conv.receipts.each do |receipt| %>
+					<% if !receipt.is_read? && receipt.receiver_id == current_user.id %>
+						<% bold = true %>
+						<% break %>
+					<% end %>
+				<% end %>
+			<tr> 
+				<td> </td> 
+				<td>
+					<% if bold %>
+						<b> <%= link_to conv.last_sender.email, conversation_path(conv.id)  %> </b>
+					<% else %> 
+						<%= link_to conv.last_sender.email, conversation_path(conv.id)  %>
+					<% end %> 
+				</td> 
+				<td> 
+					<% if bold %>
+						<b> <%= link_to conv.subject, conversation_path(conv.id)  %> </b>
+					<% else %> 
+						<%= link_to conv.subject, conversation_path(conv.id)  %>
+					<% end %>
+				</td>
+				<td> 
+					<% if bold %>
+						<b> <%= link_to conv.last_message.body, conversation_path(conv.id)  %> </b>
+					<% else %> 
+						<%= link_to conv.last_message.body, conversation_path(conv.id)  %>
+					<% end %>
+				</td>
 
-<% end %>
+			</tr>
+			<% end %>
+
+
+			
+
+
+	</table>
+
+
+<%# end %>
 <hr>
