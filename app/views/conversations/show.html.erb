@@ -22,9 +22,12 @@
 
 
 <br/><br/><hr>
+<% count = 0 %>
 <%#= form_for :message, url:[:reply, conversation] do |f| %>
 <% @notif.each do |n| %>
+
 	<% if !n.is_trashed?(current_user) %>
+	<% count = count + 1 %>
 	
 	<div>
 		<!-- <div style="float:left;"> -->
@@ -32,7 +35,8 @@
 		<!-- </div> -->
 		<div>
 
-			<div id="slideoutmessage"><b>From: &nbsp;<%= User.find(n.sender_id).email %></b> </div><br/>
+			<a style="cursor:pointer;" class="slideoutmessage" target = <%= count %>>
+				<b>From: &nbsp;<%= User.find(n.sender_id).email %></b> </a><br/>
 			<!-- <b>To: &nbsp; -->
 				<%# @conv.recipients.each do |rec| %>
 				<!-- <%#= rec.email %>,  -->
@@ -40,18 +44,19 @@
 			<!-- </b>	 -->
 			 <!-- <br/> -->
 				<!-- Subject: <%= n.subject %> <br/> -->
-				<div id="message" style="display:none;">
+				
+				<div id="message<%= count %>" style="display:none;">
 				<div style="float:left;">Body: <%= n.body %> </div>
 				<div style="float:right;">
 					<%= link_to image_tag("trash.png",:width=>30), 
 					trashnotif_conversation_path(n), :method => :post, :params => {:notif_id => n} %>
-					<div style="display:inline" id="formmessageslideout"><img src="/assets/mail-reply.png"/ width="30"></div>	
+					<div style="display:inline" targetmessage="<%= count %>" class="formmessageslideout"><img src="/assets/mail-reply.png"/ width="30"></div>	
 				</div>
 				 
 				<div style="float:right;font-size:14px;color:#ccc;">
 					<%= time_ago_in_words(n.updated_at) %> ago
 				</div> &nbsp;<br><br>
-		<div id="formmessage" style="display:none;">
+		<div id="formmessage<%= count %>" style="display:none;">
 			<%#= text_field :body , :size => 150%>
 			<%#= text_area :body, :cols=>28, :rows=>3, :placeholder=>'Type your message here' 
 			%>
@@ -78,8 +83,8 @@
 
 <script>
 $(document).ready(function(){
-	$('#slideoutmessage').click(function(){
-		$('#message').slideToggle("fast");
+	$('.slideoutmessage').click(function(){
+		$('#message'+$(this).attr('target')).slideToggle("fast");
 
 	});
 
@@ -90,12 +95,12 @@ $(document).ready(function(){
 
 <script>
 $(document).ready(function(){
-	$('div#formmessageslideout').click(function(){
-		$('div#formmessage').slideToggle("fast");
+	$('.formmessageslideout').click(function(){
+		$('#formmessage'+$(this).attr('targetmessage')).slideToggle("fast");
 
 	});
 
 
 });
 
-</script>
+ </script>
