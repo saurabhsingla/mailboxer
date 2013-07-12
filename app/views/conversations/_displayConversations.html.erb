@@ -6,10 +6,10 @@
 	<table border = '0'>
 		<tr>
 			<th></th>
-			<th>Sender</th>
-			<th>Subject</th>
-			<th>Messages</th>
-			<th> </th> 
+			<th width = "200px">Sender</th>
+			<th width = "200px", align = "center">Subject</th>
+			<th width = "200px"></th>
+			<th width = "200px"> </th> 
 		</tr>
 			<% @convs.each do |conv| %>
 				<% bold = false %>
@@ -28,19 +28,19 @@
 						<%= link_to conv.last_sender.email, conversation_path(conv.id)  %>
 					<% end %> 
 				</td> 
-				<td> 
+				<td align = "center"> 
 					<% if bold %>
 						<b> <%= link_to conv.subject, conversation_path(conv.id)  %> </b>
 					<% else %> 
 						<%= link_to conv.subject, conversation_path(conv.id)  %>
 					<% end %>
 				</td>
-				<td> 
-					<% if bold %>
-						<b> <%= link_to conv.last_message.body, conversation_path(conv.id)  %> </b>
-					<% else %> 
-						<%= link_to conv.last_message.body, conversation_path(conv.id)  %>
-					<% end %>
+				<td > </td>
+			
+				<td align = "center">
+					<div style = "float:right; color:grey; font-size:14px; font-style:italic">
+						<%= time_ago_in_words(conv.last_message.created_at) %> ago
+					</div>
 				</td>
 
 			</tr>

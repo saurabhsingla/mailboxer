@@ -93,17 +93,41 @@ class ConversationsController < ApplicationController
 
 	# to reply on a conversation
 	def reply
-		# @originalConv = conversation
 		if message_params(:subject).empty?
 			current_user.reply_to_conversation(conversation, 
 			*message_params(:body, ""), should_untrash=false)
 		else
 			current_user.reply_to_conversation(conversation, 
 			*message_params(:body, :subject), should_untrash=false)
-
 		end
     	redirect_to conversation
 
+	end
+
+	def replysingleuser
+
+		recifreply = Receipt.find(params[:notif_id])
+		currconversation = recifreply.notification.conversation
+		# in case To: field has been specified
+		if !params[:recipients].empty?
+			@rec_emails = params[:recipients].split(',')
+			@rec = User.where(email: @rec_emails).all
+			if params[:subject].empty?
+				debugger
+				current_user.reply(currconversation,@rec,params[:body] )
+			else
+				current_user.reply(currconversation,@rec,params[:body],
+					params[:subject] )
+			end
+		else			
+			if params[:subject].empty?
+				current_user.reply_to_sender(recifreply,params[:body])
+			else
+				current_user.reply_to_sender(recifreply,params[:body],
+					params[:subject])
+			end
+		end
+		redirect_to conversation
 	end
 
 	# this is linked with the index page. It shows all the conversations linked with the current user
@@ -112,10 +136,10 @@ class ConversationsController < ApplicationController
 	end
 
 	def trashnotif
-		notificationToBeDeleted = Notification.find(params[:id])
+		receiptToBeDeleted = Receipt.find(params[:id])
 		
-		notificationToBeDeleted.move_to_trash(current_user)
-		conversation = Conversation.find(notificationToBeDeleted.conversation_id)
+		receiptToBeDeleted.move_to_trash
+		conversation = Conversation.find(receiptToBeDeleted.notification.conversation.id)
 		redirect_to conversation
 	end
 

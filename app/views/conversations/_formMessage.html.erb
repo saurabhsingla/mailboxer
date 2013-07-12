@@ -1,11 +1,13 @@
-<%= form_for :message, url:[:reply, conversation] do |f| %>
+<%= form_for :message, url:[:reply, conversation] do |f| %>	
 
 	<%= f.label :subject %>
 	<%= f.text_field :subject %> <br/>
+	<%#= conversation %> <br/>
 
 	<div style="float:left;">
 		<%= f.label :body %>
-		<%= f.text_area :body, :cols=>28, :rows=>3, :placeholder=>'Type your message here' %></div>
+		<%= f.text_area :body, :cols=>28, :rows=>3, :placeholder=>'Type your message here' %>
+	</div>
 
 	<div style="float:left;"><%= f.submit 'Reply' %></div>
 
