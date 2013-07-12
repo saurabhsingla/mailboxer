@@ -1,8 +1,60 @@
 <div style="background-color:#099;float:left;margin-left:40px;">
 	<div style="width:850px;height:500px;padding-left:30px;border:1px solid #ccc">
 		<h2> Trash (<%= @countTrashConvUnread %>  unread conversations)</h2>
-		<%= render 'displayConversations' %>
+		<table border = '0'>
+		<tr>
+			<th></th>
+			<th width = "200px">Sender</th>
+			<th width = "200px", align = "center">Subject</th>
+			<th width = "200px"></th>
+			<th width = "200px"> </th> 
+		</tr>
+			<% @convs.each do |conv| %>
+				<% bold = false %>
+				<% conv.receipts.each do |receipt| %>
+					<% if !receipt.is_read? && receipt.receiver_id == current_user.id %>
+						<% bold = true %>
+						<% break %>
+					<% end %>
+				<% end %>
+			<tr> 
+				<td> </td> 
+				<td>
+					<% if bold %>
+						<b> <%= link_to conv.last_sender.email, show_trashed_conversation_path(conv.id)  %> </b>
+					<% else %> 
+						<%= link_to conv.last_sender.email, show_trashed_conversation_path(conv.id)  %>
+					<% end %> 
+				</td> 
+				<td align = "center"> 
+					<% if bold %>
+						<b> <%= link_to conv.subject, show_trashed_conversation_path(conv.id)  %> </b>
+					<% else %> 
+						<%= link_to conv.subject, show_trashed_conversation_path(conv.id)  %>
+					<% end %>
+				</td>
+				<td > </td>
+				<% conv.receipts.all(:order => 'updated_at DESC').each do |rec| %> 
+					<% if rec.is_trashed? && rec.receiver_id == current_user.id %>
+						<td align = "center">
+							<div style = "float:right; color:grey; font-size:14px; 
+							font-style:italic">
+								<%= time_ago_in_words(rec.updated_at) %> ago
+								<% break %>
+							</div>
+						</td>
+					<% end %>
+				<% end %>
+			</tr>
+			<% end %>
+
+
+			
+
+
+	</table>
 		<%= will_paginate @convs %>
-		<%= @abcd %>
+		<%# @convs %>
+		<%#= @abcd %>
 	</div>
 </div>

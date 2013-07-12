@@ -39,7 +39,15 @@
 			
 				<td align = "center">
 					<div style = "float:right; color:grey; font-size:14px; font-style:italic">
-						<%= time_ago_in_words(conv.last_message.created_at) %> ago
+						<% conv.receipts.all(:order => 'updated_at DESC').each do |rec| %> 
+							<% if !rec.is_trashed? && rec.receiver_id == current_user.id %>
+								<%= time_ago_in_words(rec.created_at) %> ago
+								<% break %>
+							<% end %>
+						<% end %>
+
+
+						<!-- <%#= time_ago_in_words(conv.updated_at) %> ago -->
 					</div>
 				</td>
 

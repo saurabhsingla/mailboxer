@@ -2,6 +2,7 @@ class ConversationsController < ApplicationController
 	before_filter :authenticate_user!
 	helper_method :mailbox, :conversation
 	include ConversationsHelper
+	require 'will_paginate/array'
 
 	# This method is for creation of a new conversation
 	def create
@@ -29,6 +30,25 @@ class ConversationsController < ApplicationController
 		# debugger
 	end
 
+	def show_trashed
+		@conv = Conversation.find(params[:id])
+		@receipts = @conv.receipts.all(:order => 'updated_at DESC')
+		unless @conv.is_participant?(current_user)
+        	flash[:alert] = "You do not have permission to view that conversation."
+        	return redirect_to root_path
+      	end
+		# make is_read true when the current user has opened the conversation
+		@conv.receipts.each do |receipt|
+			
+			if receipt.receiver_id == current_user.id				
+				receipt.is_read = true
+				receipt.save				
+			end
+		end
+		
+		@notif = Notification.where(:conversation_id => params[:id])
+	end
+
 	def displaysentbox
 		@convs = current_user.mailbox.sentbox.paginate(:page => params[:page], :per_page => 10)
 		@countSentboxConvUnread = 0
@@ -43,25 +63,24 @@ class ConversationsController < ApplicationController
 	end
 
 	def displaytrash
-		@abcd = current_user.mailbox.conversations.all
-		@abcd.each do |conv|
-			conv.receipts do |rec|
-				if rec.is_trashed && rec.receiver_id == current_user.id
-
-					# to be continued...
-
-				end
+		@convstemp = current_user.mailbox.conversations(:order => 'lasttrashed_at DESC')
+		@convs = []
+		@convstemp.each do |conv|
+			if conv.is_trashed?(current_user)
+				@convs.push(conv)
 			end
 		end
-		@convs = current_user.mailbox.trash.paginate(:page => params[:page], :per_page => 10)
+		@convs = @convs.paginate(:page => params[:page], :per_page => 10)
 		@countTrashConvUnread = 0
-		@convs.each do |trash|
-			trash.receipts.each do |receipt|
-				if !receipt.is_read? && receipt.receiver_id == current_user.id
-					@countTrashConvUnread = @countTrashConvUnread + 1
-					break
-				end
-			end			
+		if !@convs.empty?
+			@convs.each do |trash|
+				trash.receipts.each do |receipt|
+					if !receipt.is_read? && receipt.receiver_id == current_user.id
+						@countTrashConvUnread = @countTrashConvUnread + 1
+						break
+					end
+				end	
+			end
 		end
 	end
 
@@ -82,13 +101,6 @@ class ConversationsController < ApplicationController
 		end
 		
 		@notif = Notification.where(:conversation_id => params[:id])
-		# @notif.each do |noti|
-		# 	noti.receipts.each do |rec|
-		# 		if rec.is_trashed?
-
-		# 	end
-
-		# end
 	end
 
 	# to reply on a conversation
@@ -135,11 +147,19 @@ class ConversationsController < ApplicationController
 		
 	end
 
+	# to trash individual receipt
 	def trashnotif
 		receiptToBeDeleted = Receipt.find(params[:id])
 		
 		receiptToBeDeleted.move_to_trash
+		dateTime = Time.new
+		receiptToBeDeleted.updated_at = dateTime.to_time
+		receiptToBeDeleted.save
+
 		conversation = Conversation.find(receiptToBeDeleted.notification.conversation.id)
+		conversation.lasttrashed_at = dateTime.to_time
+		conversation.save
+		
 		redirect_to conversation
 	end
 
