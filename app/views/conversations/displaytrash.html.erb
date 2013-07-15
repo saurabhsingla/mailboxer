@@ -1,6 +1,10 @@
 <div style="background-color:#099;float:left;margin-left:40px;">
 	<div style="width:850px;height:500px;padding-left:30px;border:1px solid #ccc">
 		<h2> Trash (<%= @countTrashConvUnread %>  unread conversations)</h2>
+		<%= form_tag displaytrash_conversation_path do %>
+				<%= text_field_tag(:search) %> 
+				<%= submit_tag "Search" %><br/>
+		<% end %>
 		<table border = '0'>
 		<tr>
 			<th></th>
@@ -9,7 +13,7 @@
 			<th width = "200px"></th>
 			<th width = "200px"> </th> 
 		</tr>
-			<% @convs.each do |conv| %>
+			<% @convFinal.each do |conv| %>
 				<% bold = false %>
 				<% conv.receipts.each do |receipt| %>
 					<% if !receipt.is_read? && receipt.receiver_id == current_user.id %>
@@ -47,13 +51,8 @@
 				<% end %>
 			</tr>
 			<% end %>
-
-
-			
-
-
 	</table>
-		<%= will_paginate @convs %>
+		<%= will_paginate @convFinal %>
 		<%# @convs %>
 		<%#= @abcd %>
 	</div>

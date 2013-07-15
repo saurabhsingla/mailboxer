@@ -17,7 +17,8 @@
 &nbsp;<h4 style="display:inline;"><%= @conv.subject %></h4>
 </div></div>
 <div style="float:right;">
-	<%= link_to image_tag("trash.png",:width=>30), trash_conversation_path(@conv.id), :method => :post %>
+	<%= link_to image_tag("trash.png",:width=>30), trash_conversation_path(@conv.id), 
+	:method => :post %>
 </div>
 
 

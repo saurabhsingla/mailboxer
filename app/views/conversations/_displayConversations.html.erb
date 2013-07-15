@@ -11,48 +11,51 @@
 			<th width = "200px"></th>
 			<th width = "200px"> </th> 
 		</tr>
-			<% @convs.each do |conv| %>
-				<% bold = false %>
-				<% conv.receipts.each do |receipt| %>
-					<% if !receipt.is_read? && receipt.receiver_id == current_user.id %>
-						<% bold = true %>
-						<% break %>
-					<% end %>
-				<% end %>
-			<tr> 
-				<td> </td> 
-				<td>
-					<% if bold %>
-						<b> <%= link_to conv.last_sender.email, conversation_path(conv.id)  %> </b>
-					<% else %> 
-						<%= link_to conv.last_sender.email, conversation_path(conv.id)  %>
-					<% end %> 
-				</td> 
-				<td align = "center"> 
-					<% if bold %>
-						<b> <%= link_to conv.subject, conversation_path(conv.id)  %> </b>
-					<% else %> 
-						<%= link_to conv.subject, conversation_path(conv.id)  %>
-					<% end %>
-				</td>
-				<td > </td>
-			
-				<td align = "center">
-					<div style = "float:right; color:grey; font-size:14px; font-style:italic">
-						<% conv.receipts.all(:order => 'updated_at DESC').each do |rec| %> 
-							<% if !rec.is_trashed? && rec.receiver_id == current_user.id %>
-								<%= time_ago_in_words(rec.created_at) %> ago
-								<% break %>
-							<% end %>
+			<% @convFinal.each do |conv| %>
+			<%# debugger %>
+				<%# if @search == nil or conv.subject.include? @search %>
+					<% bold = false %>
+					<% conv.receipts.each do |receipt| %>
+						<% if !receipt.is_read? && receipt.receiver_id == current_user.id %>
+							<% bold = true %>
+							<% break %>
 						<% end %>
+					<% end %>
+				<tr> 
+					<td> </td> 
+					<td>
+						<% if bold %>
+							<b> <%= link_to conv.last_sender.email, conversation_path(conv.id)  %> </b>
+						<% else %> 
+							<%= link_to conv.last_sender.email, conversation_path(conv.id)  %>
+						<% end %> 
+					</td> 
+					<td align = "center"> 
+						<% if bold %>
+							<b> <%= link_to conv.subject, conversation_path(conv.id)  %> </b>
+						<% else %> 
+							<%= link_to conv.subject, conversation_path(conv.id)  %>
+						<% end %>
+					</td>
+					<td > </td>
+				
+					<td align = "center">
+						<div style = "float:right; color:grey; font-size:14px; font-style:italic">
+							<% conv.receipts.all(:order => 'updated_at DESC').each do |rec| %> 
+								<% if !rec.is_trashed? && rec.receiver_id == current_user.id %>
+									<%= time_ago_in_words(rec.created_at) %> ago
+									<% break %>
+								<% end %>
+							<% end %>
 
 
-						<!-- <%#= time_ago_in_words(conv.updated_at) %> ago -->
-					</div>
-				</td>
+							<!-- <%#= time_ago_in_words(conv.updated_at) %> ago -->
+						</div>
+					</td>
 
-			</tr>
-			<% end %>
+				</tr>
+				<%# end %>
+				<% end %>
 
 
 			

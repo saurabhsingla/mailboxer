@@ -14,11 +14,11 @@ Newmailboxer::Application.routes.draw do
     end
   end
 
-  match 'displayinbox_conversation', to: 'conversations#displayinbox', via: [:get]
+  match 'displayinbox_conversation', to: 'conversations#displayinbox', via: [:get,:post]
 
-  match 'displaysentbox_conversation', to: 'conversations#displaysentbox', via: [:get]
+  match 'displaysentbox_conversation', to: 'conversations#displaysentbox', via: [:get,:post]
 
-  match 'displaytrash_conversation', to: 'conversations#displaytrash', via: [:get]
+  match 'displaytrash_conversation', to: 'conversations#displaytrash', via: [:get,:post]
 
   # match 'replysingle_conversation', to: 'conversations#replysingle', via: [:get]
 
