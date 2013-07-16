@@ -1,18 +1,21 @@
 <div style="background-color:#099;float:left;margin-left:40px;">
 	<div style="width:850px;height:500px;padding-left:30px;border:1px solid #ccc">
 		<h2> Trash (<%= @countTrashConvUnread %>  unread conversations)</h2>
-		<%= form_tag displaytrash_conversation_path do %>
-				<%= text_field_tag(:search) %> 
-				<%= submit_tag "Search" %><br/>
-		<% end %>
-		<table border = '0'>
-		<tr>
-			<th></th>
-			<th width = "200px">Sender</th>
-			<th width = "200px", align = "center">Subject</th>
-			<th width = "200px"></th>
-			<th width = "200px"> </th> 
-		</tr>
+		<%#= form_tag displaytrash_conversation_path do %>
+				<%#= text_field_tag(:search) %> 
+				<%#= submit_tag "Search" %><br/>
+		<%# end %>
+		<table border = '0', id = "conversations", class="display" >
+		<thead>
+			<tr>
+				<th width = "20px"></th>
+				<th width = "200px">Sender</th>
+				<th width = "400px", align = "center">Subject</th>
+				<th width = "00px"></th>
+				<th width = "100px"> </th> 
+			</tr>
+		</thead>
+		<tbody>
 			<% @convFinal.each do |conv| %>
 				<% bold = false %>
 				<% conv.receipts.each do |receipt| %>
@@ -51,8 +54,9 @@
 				<% end %>
 			</tr>
 			<% end %>
+		</tbody>
 	</table>
-		<%= will_paginate @convFinal %>
+		<%#= will_paginate @convFinal %>
 		<%# @convs %>
 		<%#= @abcd %>
 	</div>

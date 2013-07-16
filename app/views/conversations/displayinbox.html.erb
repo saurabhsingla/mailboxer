@@ -1,11 +1,11 @@
 <div style="background-color:#099;border:5px solid #fff;height:460px;float:left;margin-left:40px;">
 	<div style="width:850px;height:500px;padding-left:30px;border:1px solid #ccc">
 		<h2> Inbox (<%= @countInboxConvUnread %>  unread conversations) </h2>
-		<%= form_tag displayinbox_conversation_path do %>
-				<%= text_field_tag(:search) %> 
-				<%= submit_tag "Search" %><br/>
-		<% end %>
+		<%#= form_tag displayinbox_conversation_path do %>
+				<%#= text_field_tag(:search) %> 
+				<%#= submit_tag "Search" %><br/>
+		<%# end %>
 		<%= render 'displayConversations' %>
-		<%= will_paginate @convFinal %>
+		<%#= will_paginate @convFinal %>
 	</div>
 </div

@@ -18,10 +18,10 @@ class ConversationsController < ApplicationController
 	def displayinbox
 		# debugger
 		# if(params[:box] == nil)
-			@search = params[:search]
+			# @search = params[:search]
 			@convs = current_user.mailbox.inbox
 			@countInboxConvUnread = 0
-			@convFinal = []
+			@convFinal = @convs
 			@convs.each do |inbox|
 				# debugger
 				inbox.receipts.each do |receipt|
@@ -30,14 +30,14 @@ class ConversationsController < ApplicationController
 						break
 					end
 				end
-				if @search == nil 
-					@convFinal = @convs
-				elsif inbox.subject.include? @search
-					@convFinal.push(inbox)
-				end		
+				# if @search == nil 
+				# 	@convFinal = @convs
+				# elsif inbox.subject.include? @search
+				# 	@convFinal.push(inbox)
+				# end		
 			end	
-			@convFinal = @convFinal.paginate(:page => params[:page], :per_page => 10)
-			
+			# @convFinal = @convFinal.paginate(:page => params[:page], :per_page => 10)
+
 	end
 
 	def show_trashed
@@ -60,10 +60,10 @@ class ConversationsController < ApplicationController
 	end
 
 	def displaysentbox
-		@search = params[:search]
+		# @search = params[:search]
 		@convs = current_user.mailbox.sentbox
 		@countSentboxConvUnread = 0
-		@convFinal = []
+		@convFinal = @convs
 		@convs.each do |sentbox|
 			sentbox.receipts.each do |receipt|
 				if !receipt.is_read? && receipt.receiver_id == current_user.id
@@ -71,25 +71,26 @@ class ConversationsController < ApplicationController
 					break
 				end
 			end		
-			if @search == nil 
-					@convFinal = @convs
-				elsif sentbox.subject.include? @search
-					@convFinal.push(sentbox)				
-			end	
+			# if @search == nil 
+			# 		@convFinal = @convs
+			# 	elsif sentbox.subject.include? @search
+			# 		@convFinal.push(sentbox)				
+			# end	
 		end
-		@convFinal = @convFinal.paginate(:page => params[:page], :per_page => 10)
+		# @convFinal = @convFinal.paginate(:page => params[:page], :per_page => 10)
 	end
 
 	def displaytrash
-		@search = params[:search]
+		# @search = params[:search]
 		@convstemp = current_user.mailbox.conversations(:order => 'lasttrashed_at DESC')
 		@convs = []
-		@convFinal = []
+		
 		@convstemp.each do |conv|
 			if conv.is_trashed?(current_user)
 				@convs.push(conv)
 			end
 		end
+		@convFinal = @convs
 		# @convs = @convs.paginate(:page => params[:page], :per_page => 10)
 		@countTrashConvUnread = 0
 		if !@convs.empty?
@@ -100,14 +101,14 @@ class ConversationsController < ApplicationController
 						break
 					end
 				end
-				if @search == nil 
-					@convFinal = @convs
-				elsif trash.subject.include? @search
-					@convFinal.push(trash)				
-				end	
+				# if @search == nil 
+				# 	@convFinal = @convs
+				# elsif trash.subject.include? @search
+				# 	@convFinal.push(trash)				
+				# end	
 			end
 		end
-		@convFinal = @convFinal.paginate(:page => params[:page], :per_page => 10)
+		# @convFinal = @convFinal.paginate(:page => params[:page], :per_page => 10)
 	end
 
 	# to show a particular conversation details
@@ -195,18 +196,18 @@ class ConversationsController < ApplicationController
 	    conversation.move_to_trash(current_user)
 	    # Completely delete the conversation if all the participants of the conversation have
 	    # trashed the conversation.
-	    if_trashed = false
-	    conversation.participants.each do |participient|
-	    	if_trashed = conversation.is_completely_trashed?(participient)
+	    # if_trashed = false
+	    # conversation.participants.each do |participient|
+	    # 	if_trashed = conversation.is_completely_trashed?(participient)
 	    	
-	    	if !if_trashed
-	    		break
-	    	end
-	    end
+	    # 	if !if_trashed
+	    # 		break
+	    # 	end
+	    # end
 	    
-	    if if_trashed
-	    	conversation.messages.destroy_all
-	    end
+	    # if if_trashed
+	    # 	conversation.messages.destroy_all
+	    # end
     	redirect_to :conversations
   	end
 

@@ -3,14 +3,17 @@
 		<%#= inbox.created_at %>
 		<%# currentTime = %>
 
-	<table border = '0'>
-		<tr>
-			<th></th>
-			<th width = "200px">Sender</th>
-			<th width = "200px", align = "center">Subject</th>
-			<th width = "200px"></th>
-			<th width = "200px"> </th> 
-		</tr>
+	<table border = '0', id = "conversations", class="display">
+		<thead>
+			<tr>
+				<th width = "20px"></th>
+				<th width = "200px">Sender</th>
+				<th width = "400px", align = "center">Subject</th>
+				<th width = "00px"></th>
+				<th width = "100px"> </th> 
+			</tr>
+		</thead>
+		<tbody>
 			<% @convFinal.each do |conv| %>
 			<%# debugger %>
 				<%# if @search == nil or conv.subject.include? @search %>
@@ -56,11 +59,7 @@
 				</tr>
 				<%# end %>
 				<% end %>
-
-
-			
-
-
+			</tbody>
 	</table>
 
 
