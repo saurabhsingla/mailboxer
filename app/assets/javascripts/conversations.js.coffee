@@ -4,15 +4,13 @@
 
 jQuery -> 
 	$('#conversations').dataTable({
-	
+
 	sPaginationType: "full_numbers"
 	bJQueryUI: true
-	"aoColumns": [
-      { "bSortable":    false },
-      null,
-      null,
-      "bVisible":    false ,
-      "bSearchable": false
-      null 
+	"aoColumnDefs": [
+      { "bVisible": false, "aTargets": [ 3 ] }
+      { "bSortable": false, "aTargets": [ 0,4 ] }
+      { "bSearchable": false, "aTargets": [ 4 ] }       
     ]
+   
 	});
