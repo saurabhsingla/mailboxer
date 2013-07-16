@@ -16,25 +16,38 @@ class ConversationsController < ApplicationController
 	end
 
 	def displayinbox
-		# debugger
-		# if(params[:box] == nil)
-			# @search = params[:search]
+
 			@convs = current_user.mailbox.inbox
-			@countInboxConvUnread = 0
-			@convFinal = @convs
-			@convs.each do |inbox|
-				# debugger
-				inbox.receipts.each do |receipt|
-					if !receipt.is_read? && receipt.receiver_id == current_user.id
-						@countInboxConvUnread = @countInboxConvUnread + 1
-						break
+			# @countInboxConvUnread = 0
+			@convFinal = []
+			if params[:filter_param].nil?
+				@convFinal = @convs
+			elsif params[:filter_param] == 'unread'
+				@convs.each do |inbox|
+					# debugger
+					inbox.receipts.each do |receipt|
+						if !receipt.is_read? && receipt.receiver_id == current_user.id
+							# @countInboxConvUnread = @countInboxConvUnread + 1
+							@convFinal.push(inbox)
+							break
+						end
+					end
+					# if @search == nil 
+					# 	@convFinal = @convs
+					# elsif inbox.subject.include? @search
+					# 	@convFinal.push(inbox)
+					# end		
+				end
+			elsif params[:filter_param] == 'read'
+				@convFinal = @convs
+				@convs.each do |inbox|
+					inbox.receipts.each do |receipt|
+						if !receipt.is_read? && receipt.receiver_id == current_user.id
+							@convFinal = @convFinal - Array(inbox)
+							break
+						end
 					end
 				end
-				# if @search == nil 
-				# 	@convFinal = @convs
-				# elsif inbox.subject.include? @search
-				# 	@convFinal.push(inbox)
-				# end		
 			end	
 			# @convFinal = @convFinal.paginate(:page => params[:page], :per_page => 10)
 
@@ -62,20 +75,36 @@ class ConversationsController < ApplicationController
 	def displaysentbox
 		# @search = params[:search]
 		@convs = current_user.mailbox.sentbox
-		@countSentboxConvUnread = 0
-		@convFinal = @convs
-		@convs.each do |sentbox|
-			sentbox.receipts.each do |receipt|
-				if !receipt.is_read? && receipt.receiver_id == current_user.id
-					@countSentboxConvUnread = @countSentboxConvUnread + 1
-					break
-				end
-			end		
-			# if @search == nil 
-			# 		@convFinal = @convs
-			# 	elsif sentbox.subject.include? @search
-			# 		@convFinal.push(sentbox)				
-			# end	
+		@convFinal = []
+		# @countSentboxConvUnread = 0
+		if params[:filter_param].nil?
+				@convFinal = @convs
+		elsif params[:filter_param] == 'unread'
+
+			@convs.each do |sentbox|
+				sentbox.receipts.each do |receipt|
+					if !receipt.is_read? && receipt.receiver_id == current_user.id
+						# @countSentboxConvUnread = @countSentboxConvUnread + 1
+						@convFinal.push(sentbox)
+						break
+					end
+				end		
+				# if @search == nil 
+				# 		@convFinal = @convs
+				# 	elsif sentbox.subject.include? @search
+				# 		@convFinal.push(sentbox)				
+				# end	
+			end
+		elsif params[:filter_param] == 'read'
+			@convFinal = @convs
+			@convs.each do |sentbox|
+				sentbox.receipts.each do |receipt|
+					if !receipt.is_read? && receipt.receiver_id == current_user.id
+						@convFinal = @convFinal - Array(sentbox)
+						break
+					end
+				end		
+			end
 		end
 		# @convFinal = @convFinal.paginate(:page => params[:page], :per_page => 10)
 	end
@@ -90,23 +119,46 @@ class ConversationsController < ApplicationController
 				@convs.push(conv)
 			end
 		end
-		@convFinal = @convs
-		# @convs = @convs.paginate(:page => params[:page], :per_page => 10)
-		@countTrashConvUnread = 0
+		@convFinal = []
+		# @countTrashConvUnread = 0
+
 		if !@convs.empty?
-			@convs.each do |trash|
-				trash.receipts.each do |receipt|
-					if !receipt.is_read? && receipt.receiver_id == current_user.id
-						@countTrashConvUnread = @countTrashConvUnread + 1
-						break
+			if params[:filter_param].nil?
+				@convFinal = @convs
+			elsif params[:filter_param] == 'unread'
+				@convs.each do |trash|
+					trash.receipts.each do |receipt|
+						if !receipt.is_read? && receipt.receiver_id == current_user.id
+							@convFinal.push(trash)
+							break
+						end
 					end
 				end
+			elsif params[:filter_param] == 'read'
+				@convFinal = @convs
+				@convs.each do |trash|
+					trash.receipts.each do |receipt|
+						if !receipt.is_read? && receipt.receiver_id == current_user.id
+							@convFinal = @convFinal - Array(trash)
+							break
+						end
+					end
+				end
+			end
+					
+			# @convs.each do |trash|
+			# 	trash.receipts.each do |receipt|
+			# 		if !receipt.is_read? && receipt.receiver_id == current_user.id
+			# 			@countTrashConvUnread = @countTrashConvUnread + 1
+			# 			break
+			# 		end
+			# 	end
 				# if @search == nil 
 				# 	@convFinal = @convs
 				# elsif trash.subject.include? @search
 				# 	@convFinal.push(trash)				
 				# end	
-			end
+			# end
 		end
 		# @convFinal = @convFinal.paginate(:page => params[:page], :per_page => 10)
 	end
