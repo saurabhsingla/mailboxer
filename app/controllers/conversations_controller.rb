@@ -24,7 +24,7 @@ class ConversationsController < ApplicationController
 				@convFinal = @convs
 			elsif params[:filter_param] == 'unread'
 				@convs.each do |inbox|
-					# debugger
+					# coderefactor - make one loop and put condition inside in all inbox,sentbox and trash
 					inbox.receipts.each do |receipt|
 						if !receipt.is_read? && receipt.receiver_id == current_user.id
 							# @countInboxConvUnread = @countInboxConvUnread + 1
