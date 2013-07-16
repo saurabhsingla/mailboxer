@@ -33,7 +33,7 @@
 						<%= link_to conv.last_sender.email, show_trashed_conversation_path(conv.id)  %>
 					<% end %> 
 				</td> 
-				<td align = "center"> 
+				<td align = "left"> 
 					<% if bold %>
 						<b> <%= link_to conv.subject, show_trashed_conversation_path(conv.id)  %> </b>
 					<% else %> 

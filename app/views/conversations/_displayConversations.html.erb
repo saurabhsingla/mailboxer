@@ -15,7 +15,7 @@
 		</thead>
 		<tbody>
 			<% @convFinal.each do |conv| %>
-			<%# debugger %>
+			
 				<%# if @search == nil or conv.subject.include? @search %>
 					<% bold = false %>
 					<% conv.receipts.each do |receipt| %>
@@ -33,7 +33,7 @@
 							<%= link_to conv.last_sender.email, conversation_path(conv.id)  %>
 						<% end %> 
 					</td> 
-					<td align = "center"> 
+					<td align = "left"> 
 						<% if bold %>
 							<b> <%= link_to conv.subject, conversation_path(conv.id)  %> </b>
 						<% else %> 
