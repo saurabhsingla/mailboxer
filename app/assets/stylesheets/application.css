@@ -25,11 +25,11 @@
  }
 
  tr.odd{
- 	background: none !important;
+ 	background: #222222 !important;
  	/*background-color: transparent !important;*/
  }
  tr.even{
- 	background: none !important;
+ 	background: #222222 !important;
  	/*background-color: transparent !important;*/
  }
 

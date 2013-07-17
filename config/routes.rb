@@ -20,6 +20,8 @@ Newmailboxer::Application.routes.draw do
 
   match 'displaytrash_conversation', to: 'conversations#displaytrash', via: [:get,:post]
 
+  match 'trashselected', :to => 'conversations#trash'
+
   # match 'replysingle_conversation', to: 'conversations#replysingle', via: [:get]
 
   # The priority is based upon order of creation:

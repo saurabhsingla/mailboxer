@@ -2,67 +2,74 @@
 		<%#= link_to 'Move to trash', trash_conversation_path(inbox.id), :method => :post %>
 		<%#= inbox.created_at %>
 		<%# currentTime = %>
-
-	<table border = '0', id = "conversations", class="display">
-		<thead>
-			<tr>
-				<th width = "20px"></th>
-				<th width = "200px">Sender</th>
-				<th width = "400px", align = "center">Subject</th>
-				<th width = "00px"></th>
-				<th width = "100px" > </th> 
-			</tr>
-		</thead>
-		<tbody>
-			<% @convFinal.each do |conv| %>
-			
-				<%# if @search == nil or conv.subject.include? @search %>
-					<% bold = false %>
-					<% conv.receipts.each do |receipt| %>
-						<% if !receipt.is_read? && receipt.receiver_id == current_user.id %>
-							<% bold = true %>
-							<% break %>
-						<% end %>
-					<% end %>
-				<tr> 
-					<td> </td> 
-					<td>
-						<% if bold %>
-							<b><i> <%= link_to conv.last_sender.email, conversation_path(conv.id)  %> </i>
-							</b>
-						<% else %> 
-							<%= link_to conv.last_sender.email, conversation_path(conv.id)  %>
-						<% end %> 
-					</td> 
-					<td align = "left"> 
-						<% if bold %>
-							<b> <i> <%= link_to conv.subject, conversation_path(conv.id)  %> </i> </b>
-						<% else %> 
-							<%= link_to conv.subject, conversation_path(conv.id)  %>
-						<% end %>
-					</td>
-					<td > </td>
-				
-					<td align = "center">
-						<div style = "float:right; color:grey; font-size:14px; font-style:italic">
-							<% conv.receipts.all(:order => 'updated_at DESC').each do |rec| %> 
-								<% if !rec.is_trashed? && rec.receiver_id == current_user.id %>
-									<%= time_ago_in_words(rec.created_at) %> ago
+		<%#= link_to 'Trash selected', trashselected_path %>
+		<%= form_tag trashselected_path, :method => :post do %>
+			<table border = '0', id = "conversations", class="display">
+				<thead>
+					<tr>
+						<th width = "20px"></th>
+						<th width = "200px">Sender</th>
+						<th width = "400px", align = "center">Subject</th>
+						<th width = "00px"></th>
+						<th width = "100px" > </th> 
+					</tr>
+				</thead>
+				<tbody>
+					
+					<% @convFinal.each do |conv| %>
+					
+						<%# if @search == nil or conv.subject.include? @search %>
+							<% bold = false %>
+							<% conv.receipts.each do |receipt| %>
+								<% if !receipt.is_read? && receipt.receiver_id == current_user.id %>
+									<% bold = true %>
 									<% break %>
 								<% end %>
 							<% end %>
+						<tr> 
+							<td>
+								<%#= check_box_tag(conv.id) :name = "conv_ids[]" %>
+								<input type ="checkbox" name = "conv_ids[]" value = <%= conv.id %> > 
+								<%# if %>
+								</td> 
+							<td>
+								<% if bold %>
+									<b><i> <%= link_to conv.last_sender.email, conversation_path(conv.id)  %> </i>
+									</b>
+								<% else %> 
+									<%= link_to conv.last_sender.email, conversation_path(conv.id)  %>
+								<% end %> 
+							</td> 
+							<td align = "left"> 
+								<% if bold %>
+									<b> <i> <%= link_to conv.subject, conversation_path(conv.id)  %> </i> </b>
+								<% else %> 
+									<%= link_to conv.subject, conversation_path(conv.id)  %>
+								<% end %>
+							</td>
+							<td > </td>
+						
+							<td align = "center">
+								<div style = "float:right; color:grey; font-size:14px; font-style:italic">
+									<% conv.receipts.all(:order => 'updated_at DESC').each do |rec| %> 
+										<% if !rec.is_trashed? && rec.receiver_id == current_user.id %>
+											<%= time_ago_in_words(rec.created_at) %> ago
+											<% break %>
+										<% end %>
+									<% end %>
 
 
-							<!-- <%#= time_ago_in_words(conv.updated_at) %> ago -->
-						</div>
-					</td>
+									<!-- <%#= time_ago_in_words(conv.updated_at) %> ago -->
+								</div>
+							</td>
 
-				</tr>
-				<%# end %>
-				<% end %>
-			</tbody>
-	</table>
+						</tr>
+						<%# end %>
+						<% end %>
+						<%= submit_tag "Trash Selected", :name => 'trashselected' %>
+						<%# end %>
+					</tbody>
+			</table>
+	<% end %>
 
-
-<%# end %>
 <hr>

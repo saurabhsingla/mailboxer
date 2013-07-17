@@ -16,12 +16,12 @@ class ConversationsController < ApplicationController
 	end
 
 	def displayinbox
-
+			@people = []
 			@convs = current_user.mailbox.inbox
 			# @countInboxConvUnread = 0
 			@convFinal = []
-			if params[:filter_param].nil?
-				@convFinal = @convs
+			# if params[:filter_param].nil?
+			# 	@convFinal = @convs
 				# @convs.each do |inbox|
 				# 	# coderefactor - make one loop and put condition inside in all inbox,sentbox and trash
 				# 	inbox.receipts.each do |receipt|
@@ -32,7 +32,8 @@ class ConversationsController < ApplicationController
 				# 		end
 				# 	end
 				# end
-			elsif params[:filter_param] == 'unread'
+			if params[:unread_button]	
+			# elsif params[:filter_param] == 'unread'
 				@convs.each do |inbox|
 					# coderefactor - make one loop and put condition inside in all inbox,sentbox and trash
 					inbox.receipts.each do |receipt|
@@ -48,7 +49,8 @@ class ConversationsController < ApplicationController
 					# 	@convFinal.push(inbox)
 					# end		
 				end
-			elsif params[:filter_param] == 'read'
+			elsif params[:read_button]
+			# elsif params[:filter_param] == 'read'
 				@convFinal = @convs
 				@convs.each do |inbox|
 					inbox.receipts.each do |receipt|
@@ -58,6 +60,8 @@ class ConversationsController < ApplicationController
 						end
 					end
 				end
+			else
+				@convFinal = @convs
 			end	
 			# @convFinal = @convFinal.paginate(:page => params[:page], :per_page => 10)
 
@@ -254,8 +258,26 @@ class ConversationsController < ApplicationController
 
 	# to trash a particular conversation
 	def trash
+		# debugger
 
-	    conversation.move_to_trash(current_user)
+		conversationsToBeTrashed = params[:conv_ids]
+		if !conversationsToBeTrashed.nil?
+			dateTime = Time.new
+			conversationsToBeTrashed.each do |conversation_id|
+				conversation = Conversation.find(conversation_id)
+				# debugger
+		    	conversation.move_to_trash(current_user)
+		    	conversation.lasttrashed_at = dateTime.to_time
+				conversation.save
+				conversation.receipts.each do |receiptToBeDeleted|
+					receiptToBeDeleted.updated_at = dateTime.to_time
+					receiptToBeDeleted.save
+				end
+
+		    end
+		end
+
+
 	    # Completely delete the conversation if all the participants of the conversation have
 	    # trashed the conversation.
 	    # if_trashed = false
@@ -276,7 +298,7 @@ class ConversationsController < ApplicationController
   	# to untrash a trashed conversation
   	def untrash
   		conversation.untrash(current_user)
-  		redirect_to :conversations
+  		redirect_to :displaytrash_conversation
   	end
 
   	# to permanently delete a conversation. Currently not in use.
