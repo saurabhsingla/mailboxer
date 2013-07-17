@@ -22,6 +22,16 @@ class ConversationsController < ApplicationController
 			@convFinal = []
 			if params[:filter_param].nil?
 				@convFinal = @convs
+				# @convs.each do |inbox|
+				# 	# coderefactor - make one loop and put condition inside in all inbox,sentbox and trash
+				# 	inbox.receipts.each do |receipt|
+				# 		if !receipt.is_read? && receipt.receiver_id == current_user.id
+				# 			@countInboxConvUnread = @countInboxConvUnread + 1
+				# 			# @convFinal.push(inbox)
+				# 			break
+				# 		end
+				# 	end
+				# end
 			elsif params[:filter_param] == 'unread'
 				@convs.each do |inbox|
 					# coderefactor - make one loop and put condition inside in all inbox,sentbox and trash

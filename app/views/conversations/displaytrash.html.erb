@@ -1,9 +1,10 @@
 <div style="background-color:#099;float:left;margin-left:40px;">
 	<div style="width:850px;height:500px;padding-left:30px;border:1px solid #ccc">
-		<h2> Trash (<%= @countTrashConvUnread %>  unread conversations)</h2>
+		<h2> Trash </h2>
+			<!-- (<%#= @countTrashConvUnread %>  unread conversations) -->
 		<%#= form_tag displaytrash_conversation_path do %>
 				<%#= text_field_tag(:search) %> 
-				<%#= submit_tag "Search" %><br/>
+				<%#= submit_tag "Search" %>
 		<%# end %>
 		<%= form_tag displaytrash_conversation_path do %>
 				<%= hidden_field_tag(:filter_param,'read') %>	
@@ -36,14 +37,14 @@
 				<td> </td> 
 				<td>
 					<% if bold %>
-						<b> <%= link_to conv.last_sender.email, show_trashed_conversation_path(conv.id)  %> </b>
+						<b> <i> <%= link_to conv.last_sender.email, show_trashed_conversation_path(conv.id)  %> </i></b>
 					<% else %> 
 						<%= link_to conv.last_sender.email, show_trashed_conversation_path(conv.id)  %>
 					<% end %> 
 				</td> 
 				<td align = "left"> 
 					<% if bold %>
-						<b> <%= link_to conv.subject, show_trashed_conversation_path(conv.id)  %> </b>
+						<b> <i> <%= link_to conv.subject, show_trashed_conversation_path(conv.id)  %> </i></b>
 					<% else %> 
 						<%= link_to conv.subject, show_trashed_conversation_path(conv.id)  %>
 					<% end %>

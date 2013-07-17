@@ -28,14 +28,14 @@
 					<td> </td> 
 					<td>
 						<% if bold %>
-							<b> <%= link_to conv.last_sender.email, conversation_path(conv.id)  %> </b>
+							<b><i> <%= link_to conv.last_sender.email, conversation_path(conv.id)  %> </i></b>
 						<% else %> 
 							<%= link_to conv.last_sender.email, conversation_path(conv.id)  %>
 						<% end %> 
 					</td> 
 					<td align = "left"> 
 						<% if bold %>
-							<b> <%= link_to conv.subject, conversation_path(conv.id)  %> </b>
+							<b> <i> <%= link_to conv.subject, conversation_path(conv.id)  %> </i> </b>
 						<% else %> 
 							<%= link_to conv.subject, conversation_path(conv.id)  %>
 						<% end %>
