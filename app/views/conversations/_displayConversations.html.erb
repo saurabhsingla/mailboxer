@@ -28,7 +28,8 @@
 					<td> </td> 
 					<td>
 						<% if bold %>
-							<b><i> <%= link_to conv.last_sender.email, conversation_path(conv.id)  %> </i></b>
+							<b><i> <%= link_to conv.last_sender.email, conversation_path(conv.id)  %> </i>
+							</b>
 						<% else %> 
 							<%= link_to conv.last_sender.email, conversation_path(conv.id)  %>
 						<% end %> 

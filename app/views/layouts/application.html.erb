@@ -34,29 +34,39 @@
   <% if request.fullpath == '/displayinbox_conversation' %>
   
   <b> <%= link_to 'Inbox', displayinbox_conversation_path %> 
-    <!-- (<%#= unreadinboxnumber %>  unread conversations) </b>  -->
+
+    <!--   unread conversations) </b>  -->
   <% else %>
     <%= link_to 'Inbox', displayinbox_conversation_path %> 
     <!-- (<%#= unreadinboxnumber %>  unread conversations) -->
+  <% end %>
+  <% if unreadinboxnumber != 0 %> 
+    (<%= unreadinboxnumber %>)
   <% end %>
 <hr><br>
 
   <% if request.fullpath == '/displaysentbox_conversation' %>
 
-    <b> <%= link_to 'Sentbox', displaysentbox_conversation_path %> 
+    <b> <%= link_to 'Sentbox', displaysentbox_conversation_path %> </b>
       <!-- (<%#= unreadsentnumber %>  unread conversations) </b>  -->
   <% else %>
     <%= link_to 'Sentbox', displaysentbox_conversation_path %> 
     <!-- (<%#= unreadsentnumber %>  unread conversations) -->
   <% end %>
+  <% if unreadsentnumber != 0 %> 
+    (<%= unreadsentnumber %>)
+  <% end %>
   <hr><br>
 
   <% if request.fullpath == '/displaytrash_conversation' %>
-    <b> <%= link_to 'Trash', displaytrash_conversation_path %> 
+    <b> <%= link_to 'Trash', displaytrash_conversation_path %> </b>
       <!-- (<%#= unreadtrashnumber %>   unread conversations) </b> -->
   <% else %>
     <%= link_to 'Trash', displaytrash_conversation_path %> 
     <!-- (<%#= unreadtrashnumber %>   unread conversations) -->
+  <% end %>
+  <% if unreadtrashnumber != 0 %> 
+    (<%= unreadtrashnumber %>)
   <% end %>
      <hr>
 
