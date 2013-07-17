@@ -7,12 +7,12 @@
 				<%#= submit_tag "Search" %>
 		<%# end %>
 		<%= form_tag displaytrash_conversation_path do %>
-				<%= hidden_field_tag(:filter_param,'read') %>	
-				<%= submit_tag "Read" %><br/>
-		<% end %>
-		<%= form_tag displaytrash_conversation_path do %>
-				<%= hidden_field_tag(:filter_param,'unread') %>	
-				<%= submit_tag "Unread" %><br/>
+				<%#= hidden_field_tag(:filter_param,'read') %>	
+				<%= submit_tag "Read",:name => 'read_button' %>
+		<%# end %>
+		<%#= form_tag displaytrash_conversation_path do %>
+				<%#= hidden_field_tag(:filter_param,'unread') %>	
+				<%= submit_tag "Unread",:name => 'unread_button' %><br/>
 		<% end %>
 		<table border = '0', id = "conversations", class="display" >
 		<thead>

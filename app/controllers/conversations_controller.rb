@@ -91,9 +91,9 @@ class ConversationsController < ApplicationController
 		@convs = current_user.mailbox.sentbox
 		@convFinal = []
 		# @countSentboxConvUnread = 0
-		if params[:filter_param].nil?
-				@convFinal = @convs
-		elsif params[:filter_param] == 'unread'
+		# if params[:filter_param].nil?
+		# 		@convFinal = @convs
+		if params[:unread_button]
 
 			@convs.each do |sentbox|
 				sentbox.receipts.each do |receipt|
@@ -109,7 +109,7 @@ class ConversationsController < ApplicationController
 				# 		@convFinal.push(sentbox)				
 				# end	
 			end
-		elsif params[:filter_param] == 'read'
+		elsif params[:read_button]
 			@convFinal = @convs
 			@convs.each do |sentbox|
 				sentbox.receipts.each do |receipt|
@@ -119,6 +119,8 @@ class ConversationsController < ApplicationController
 					end
 				end		
 			end
+		else
+			@convFinal = @convs
 		end
 		# @convFinal = @convFinal.paginate(:page => params[:page], :per_page => 10)
 	end
@@ -137,9 +139,9 @@ class ConversationsController < ApplicationController
 		# @countTrashConvUnread = 0
 
 		if !@convs.empty?
-			if params[:filter_param].nil?
-				@convFinal = @convs
-			elsif params[:filter_param] == 'unread'
+			# if params[:filter_param].nil?
+			# 	@convFinal = @convs
+			if params[:unread_button]
 				@convs.each do |trash|
 					trash.receipts.each do |receipt|
 						if !receipt.is_read? && receipt.receiver_id == current_user.id
@@ -148,7 +150,7 @@ class ConversationsController < ApplicationController
 						end
 					end
 				end
-			elsif params[:filter_param] == 'read'
+			elsif params[:read_button] 
 				@convFinal = @convs
 				@convs.each do |trash|
 					trash.receipts.each do |receipt|
@@ -158,6 +160,8 @@ class ConversationsController < ApplicationController
 						end
 					end
 				end
+			else
+				@convFinal = @convs
 			end
 					
 			# @convs.each do |trash|
@@ -276,7 +280,6 @@ class ConversationsController < ApplicationController
 
 		    end
 		end
-
 
 	    # Completely delete the conversation if all the participants of the conversation have
 	    # trashed the conversation.
