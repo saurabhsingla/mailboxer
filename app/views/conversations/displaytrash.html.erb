@@ -49,7 +49,7 @@
 						<%= link_to conv.subject, show_trashed_conversation_path(conv.id)  %>
 					<% end %>
 				</td>
-				<td > </td>
+				<td > <%= link_to 'untrash', untrash_conversation_path(conv.id), :method => :post  %> </td>
 				<% conv.receipts.all(:order => 'updated_at DESC').each do |rec| %> 
 					<% if rec.is_trashed? && rec.receiver_id == current_user.id %>
 						<td align = "center">

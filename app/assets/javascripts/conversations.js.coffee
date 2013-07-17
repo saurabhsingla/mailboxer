@@ -8,8 +8,8 @@ jQuery ->
 	sPaginationType: "full_numbers"
 	bJQueryUI: true
 	"aoColumnDefs": [
-      { "bVisible": false, "aTargets": [ 3 ] }
-      { "bSortable": false, "aTargets": [ 0,4 ] }
+      { "bVisible": false, "aTargets": [ ] }
+      { "bSortable": false, "aTargets": [ 0,3,4 ] }
       { "bSearchable": false, "aTargets": [ 4 ] }       
     ]
    
