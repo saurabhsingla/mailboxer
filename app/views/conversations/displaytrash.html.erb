@@ -34,7 +34,7 @@
 					<% end %>
 				<% end %>
 			<tr> 
-				<td> </td> 
+				<td> <input type ="checkbox" name = "conv_ids[]" value = <%= conv.id %> > </td> 
 				<td>
 					<% if bold %>
 						<b> <i> <%= link_to conv.last_sender.email, show_trashed_conversation_path(conv.id)  %> </i></b>
@@ -63,6 +63,7 @@
 				<% end %>
 			</tr>
 			<% end %>
+			<%#= submit_tag "Delete Permanently", :name => 'deletepermanently' %>
 		</tbody>
 	</table>
 		<%#= will_paginate @convFinal %>
