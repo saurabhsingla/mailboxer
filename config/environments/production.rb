@@ -83,7 +83,7 @@ ActionMailer::Base.smtp_settings = {
 :user_name => 'saurabh.singla@intuzion.com',
 :password => 'qwerty@123',
 :authentication => 'plain',
-:enable_starttls_auto => true
+:enable_starttls_auto => false
 }
 
   # Log the query plan for queries taking more than this (works

@@ -22,6 +22,8 @@ Newmailboxer::Application.routes.draw do
 
   match 'trashselected', :to => 'conversations#trash'
 
+  match 'deletepermanently', :to => 'conversations#permanentdel'
+
   # match 'replysingle_conversation', to: 'conversations#replysingle', via: [:get]
 
   # The priority is based upon order of creation:

@@ -306,11 +306,40 @@ class ConversationsController < ApplicationController
 
   	# to permanently delete a conversation. Currently not in use.
   	def permanentdel
-  		
+  		deletepermanentlyConv = params[:conv_ids]
+  		if params[:deletepermanently]
+  			if !deletepermanentlyConv.nil?
+	  			conversationsTobeDeletedPerm = params[:conv_ids]
+	  			conversationsTobeDeletedPerm.each do |conv_id|
+	  				conversation = Conversation.find(conv_id)
+	  				conversation.receipts.each do |receipt|
+	  					if receipt.is_trashed? && receipt.receiver_id == current_user.id
+	  						receipt.delete
+	  					end
+	  				end
+	  			end
+	  		end
+  		elsif params[:emptytrash]
+  			@convstemp = current_user.mailbox.conversations
+			@convs = []
+		
+			@convstemp.each do |conv|
+				if conv.is_trashed?(current_user)
+					@convs.push(conv)
+				end
+			end
+			@convs.each do |conversation|
+				conversation.receipts.each do |receipt|
+  					if receipt.is_trashed? && receipt.receiver_id == current_user.id
+  						receipt.delete
+  					end
+  				end
+			end
+  		end
   		# n.is_trashed? && n.receiver_id == current_user.id
   		
-  		conversation.delete(current_user)
-  		redirect_to :conversations
+  		# conversation.delete(current_user)
+  		redirect_to :displaytrash_conversation
   	end
 
   	# to append a conversation based on the id
