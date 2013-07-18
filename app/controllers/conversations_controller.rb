@@ -306,6 +306,9 @@ class ConversationsController < ApplicationController
 
   	# to permanently delete a conversation. Currently not in use.
   	def permanentdel
+
+  		# n.is_trashed? && n.receiver_id == current_user.id
+  		
   		conversation.delete(current_user)
   		redirect_to :conversations
   	end

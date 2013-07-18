@@ -20,7 +20,7 @@ class User < ActiveRecord::Base
   def mailboxer_email(object)
     #Check if an email should be sent for that object
     #if true
-    debugger
+    # debugger
     # mail(:to => :email, :subject => "Your Login credential")
     return :email
     #if false
