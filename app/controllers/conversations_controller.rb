@@ -17,7 +17,7 @@ class ConversationsController < ApplicationController
 
 	def displayinbox
 			@people = []
-			@convs = current_user.mailbox.inbox
+			@convs = current_user.mailbox.inbox(:order => 'updated_at DESC')
 			# @countInboxConvUnread = 0
 			@convFinal = []
 			# if params[:filter_param].nil?
@@ -88,7 +88,7 @@ class ConversationsController < ApplicationController
 
 	def displaysentbox
 		# @search = params[:search]
-		@convs = current_user.mailbox.sentbox
+		@convs = current_user.mailbox.sentbox(:order => 'updated_at DESC')
 		@convFinal = []
 		# @countSentboxConvUnread = 0
 		# if params[:filter_param].nil?

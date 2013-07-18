@@ -7,6 +7,7 @@ jQuery ->
 
 	sPaginationType: "full_numbers"
 	bJQueryUI: true
+	"aaSorting": []
 	"aoColumnDefs": [
       { "bVisible": false, "aTargets": [ ] }
       { "bSortable": false, "aTargets": [ 0,3,4 ] }

@@ -34,6 +34,8 @@ gem 'debugger'
 
 gem 'mailboxer'
 
+gem 'tlsmail'
+
 
 gem 'haml-rails'
 gem 'simple_form'

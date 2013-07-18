@@ -34,4 +34,50 @@ Newmailboxer::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+
+  # ActionMailer::Base.default_url_options[:host] = "localhost:3000"
+
+#   config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+
+#   Net::SMTP.enable_tls(OpenSSL::SSL::VERIFY_NONE)
+
+#   ActionMailer::Base.delivery_method = :smtp
+#   ActionMailer::Base.perform_deliveries = true
+#   ActionMailer::Base.raise_delivery_errors = true
+#   ActionMailer::Base.smtp_settings = {
+#     :enable_starttls_auto => true,  
+#     :address            => 'smtp.gmail.com',
+#     :port               => 587,
+#     :tls                  => true,
+#     :domain             => 'intuzion.com', #you can also use google.com
+#     :authentication     => :plain,
+#     :user_name          => 'saurabh.singla@intuzion.com',
+#     :password           => 'qwerty@123'
+# }
+
+config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+#config.action_mailer.delivery_method = :smtp
+config.action_mailer.perform_deliveries = true
+config.action_mailer.raise_delivery_errors = true
+config.action_mailer.default :charset => "utf-8"
+
+require 'tlsmail'
+
+Net::SMTP.enable_tls(OpenSSL::SSL::VERIFY_NONE)
+config.action_mailer.delivery_method = :smtp
+# ActionMailer::Base.delivery_method = :smtp
+# ActionMailer::Base.perform_deliveries = true
+# ActionMailer::Base.raise_delivery_errors = true
+
+ActionMailer::Base.smtp_settings = {
+:address => "smtp.gmail.com",
+:port => 587,
+:authentication => :plain,
+:domain => 'intuzion.com',
+:user_name => 'admin@intuzion.com',
+:password => 'a1ntu9466',
+:authentication => 'plain',
+:enable_starttls_auto => true
+}
+
 end
