@@ -21,8 +21,8 @@ class User < ActiveRecord::Base
     #Check if an email should be sent for that object
     #if true
     # debugger
-    # mail(:to => :email, :subject => "Your Login credential")
-    return :email
+    # object.delivery_method.settings.merge!(@biz.smtp_settings)
+    return self.email
     #if false
     #return nil
   end
