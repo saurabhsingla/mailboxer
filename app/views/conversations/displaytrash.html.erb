@@ -56,7 +56,8 @@
 							<td align = "center">
 								<div style = "float:right; color:grey; font-size:14px; 
 								font-style:italic">
-									<%= time_ago_in_words(rec.created_at) %> ago
+									<%#= time_ago_in_words(rec.created_at) %> 
+									<%= time_ago_in_words(conv.updated_at) %> ago
 									<% break %>
 								</div>
 							</td>

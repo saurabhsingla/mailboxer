@@ -17,7 +17,7 @@ class ConversationsController < ApplicationController
 
 	def displayinbox
 			@people = []
-			@convs = current_user.mailbox.inbox(:order => 'updated_at DESC')
+			@convs = current_user.mailbox.inbox(:order => "created_at DESC")
 			# @countInboxConvUnread = 0
 			@convFinal = []
 			# if params[:filter_param].nil?
@@ -127,7 +127,8 @@ class ConversationsController < ApplicationController
 
 	def displaytrash
 		# @search = params[:search]
-		@convstemp = current_user.mailbox.conversations(:order => 'lasttrashed_at DESC')
+		@convstemp = current_user.mailbox.conversations
+		# @convstemp = @convstemp.sort_by! {|c| c.lasttrashed_at}
 		@convs = []
 		
 		@convstemp.each do |conv|
@@ -135,6 +136,9 @@ class ConversationsController < ApplicationController
 				@convs.push(conv)
 			end
 		end
+		@convs = @convs.sort_by! {|c| (c.lasttrashed_at.nil? ? '2013-07-17 07:31:48 UTC' : c.lasttrashed_at)}
+		@convs = @convs.reverse
+		# @convstemp = @convstemp.sort_by &:lasttrashed_at.utc
 		@convFinal = []
 		# @countTrashConvUnread = 0
 
@@ -254,8 +258,9 @@ class ConversationsController < ApplicationController
 		receiptToBeDeleted.save
 
 		conversation = Conversation.find(receiptToBeDeleted.notification.conversation.id)
-		conversation.lasttrashed_at = dateTime.to_time
-		conversation.save
+		# conversation.lasttrashed_at = dateTime.to_time
+		# conversation.save
+		conversation.update_column(:lasttrashed_at, dateTime.to_time)
 		
 		redirect_to conversation
 	end
@@ -271,11 +276,18 @@ class ConversationsController < ApplicationController
 				conversation = Conversation.find(conversation_id)
 				# debugger
 		    	conversation.move_to_trash(current_user)
-		    	conversation.lasttrashed_at = dateTime.to_time
-				conversation.save
+		  #   	conversation.lasttrashed_at = dateTime.to_time
+				# conversation.save
+				# debugger
+				conversation.update_column(:lasttrashed_at, dateTime.to_time)
+				# debugger
 				conversation.receipts.each do |receiptToBeDeleted|
-					receiptToBeDeleted.updated_at = dateTime.to_time
-					receiptToBeDeleted.save
+					# if receiptToBeDeleted.receiver_id = current_user.id
+						# receiptToBeDeleted.move_to_trash
+						receiptToBeDeleted.updated_at = dateTime.to_time
+
+						receiptToBeDeleted.save
+					# end
 				end
 
 		    end
