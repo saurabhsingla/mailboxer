@@ -7,17 +7,22 @@ Newmailboxer::Application.routes.draw do
       post 'untrash'
       post 'reply'
       post 'move_to_trash'
-
+      post 'replysingleuser'
+      get 'show_trashed'
       post 'trashnotif'
       # get 'replysingle'
     end
   end
 
-  match 'displayinbox_conversation', to: 'conversations#displayinbox', via: [:get]
+  match 'displayinbox_conversation', to: 'conversations#displayinbox', via: [:get,:post]
 
-  match 'displaysentbox_conversation', to: 'conversations#displaysentbox', via: [:get]
+  match 'displaysentbox_conversation', to: 'conversations#displaysentbox', via: [:get,:post]
 
-  match 'displaytrash_conversation', to: 'conversations#displaytrash', via: [:get]
+  match 'displaytrash_conversation', to: 'conversations#displaytrash', via: [:get,:post]
+
+  match 'trashselected', :to => 'conversations#trash'
+
+  match 'deletepermanently', :to => 'conversations#permanentdel'
 
   # match 'replysingle_conversation', to: 'conversations#replysingle', via: [:get]
 

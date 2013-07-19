@@ -17,6 +17,16 @@ class User < ActiveRecord::Base
   	return :email
   end
 
+  def mailboxer_email(object)
+    #Check if an email should be sent for that object
+    #if true
+    # debugger
+    # object.delivery_method.settings.merge!(@biz.smtp_settings)
+    return self.email
+    #if false
+    #return nil
+  end
+
   def user_image(size)
   if profile_pic.present?
     return profile_pic.url(size)

@@ -27,32 +27,46 @@
   
   <% end %>
 </div><br/>
-<div class="notice" style="background-color:black;text-align:center"><%= alert %></div>
+<div class="notice" style="background-color:blue;text-align:center"><%= alert %></div>
 <% if signed_in? %>
 <div style="border:5px solid #fff;width:20%;height:400px;padding:30px;float:left;background:#08c">
    <div><%= link_to 'Compose Email', :new_conversation %></div><hr><br>
   <% if request.fullpath == '/displayinbox_conversation' %>
   
-  <b> <%= link_to 'Inbox', displayinbox_conversation_path %> 
-    (<%= unreadinboxnumber %>  unread conversations) </b> 
+  <b> <%= link_to 'Inbox', displayinbox_conversation_path %> </b>
+
+    <!--   unread conversations) </b>  -->
   <% else %>
     <%= link_to 'Inbox', displayinbox_conversation_path %> 
-    (<%= unreadinboxnumber %>  unread conversations)
+    <!-- (<%#= unreadinboxnumber %>  unread conversations) -->
+  <% end %>
+  <% if unreadinboxnumber != 0 %> 
+    (<%= unreadinboxnumber %>)
   <% end %>
 <hr><br>
 
   <% if request.fullpath == '/displaysentbox_conversation' %>
 
-    <b> <%= link_to 'Sentbox', displaysentbox_conversation_path %> (<%= unreadsentnumber %>  unread conversations) </b> 
+    <b> <%= link_to 'Sentbox', displaysentbox_conversation_path %> </b>
+      <!-- (<%#= unreadsentnumber %>  unread conversations) </b>  -->
   <% else %>
-    <%= link_to 'Sentbox', displaysentbox_conversation_path %> (<%= unreadsentnumber %>  unread conversations)
+    <%= link_to 'Sentbox', displaysentbox_conversation_path %> 
+    <!-- (<%#= unreadsentnumber %>  unread conversations) -->
+  <% end %>
+  <% if unreadsentnumber != 0 %> 
+    (<%= unreadsentnumber %>)
   <% end %>
   <hr><br>
 
   <% if request.fullpath == '/displaytrash_conversation' %>
-    <b> <%= link_to 'Trash', displaytrash_conversation_path %> (<%= unreadtrashnumber %>   unread conversations) </b>
+    <b> <%= link_to 'Trash', displaytrash_conversation_path %> </b>
+      <!-- (<%#= unreadtrashnumber %>   unread conversations) </b> -->
   <% else %>
-    <%= link_to 'Trash', displaytrash_conversation_path %> (<%= unreadtrashnumber %>   unread conversations)
+    <%= link_to 'Trash', displaytrash_conversation_path %> 
+    <!-- (<%#= unreadtrashnumber %>   unread conversations) -->
+  <% end %>
+  <% if unreadtrashnumber != 0 %> 
+    (<%= unreadtrashnumber %>)
   <% end %>
      <hr>
 

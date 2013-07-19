@@ -12,4 +12,13 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require_tree .
+//= require dataTables/jquery.dataTables
+//= require_tree
+// var aoColums = [];
+// $('#example thead th').each( function () {
+//     if ( $(this).hasClass( 'no_sort' ) {
+//         aoColumns.push( { "bSortable": false } );
+//     } else {
+//         aoColumns.push( null );
+//     }
+// } );

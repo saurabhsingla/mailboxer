@@ -1,7 +1,19 @@
-<div style="background-color:#099;border:5px solid #fff;height:460px;float:left;margin-left:40px;">
-	<div style="width:400px;height:500px;padding-left:30px;border:1px solid #ccc">
-		<h2> Sentbox (<%= @countSentboxConvUnread %>  unread conversations)</h2>
+<div style="background-color:#099;border:5px solid #fff;height:500px;float:left;margin-left:40px;">
+	<div style="width:850px;height:500px;padding-left:30px;border:1px solid #ccc">
+		<h2> Sentbox </h2>
+		<!-- (<%#= @countSentboxConvUnread %>  unread conversations) -->
+		<%#= form_tag displaysentbox_conversation_path do %>
+				<%#= text_field_tag(:search) %> 
+				<%#= submit_tag "Search" %>		<%# end %>
+		<%= form_tag displaysentbox_conversation_path do %>
+				<%#= hidden_field_tag(:filter_param,'read') %>	
+				<%= submit_tag "Read",:name => 'read_button' %>
+		<%# end %>
+		<%#= form_tag displaysentbox_conversation_path do %>
+				<%#= hidden_field_tag(:filter_param,'unread') %>	
+				<%= submit_tag "Unread",:name => 'unread_button' %><br/>
+		<% end %>
 		<%= render 'displayConversations' %>
-		<%= will_paginate @convs %>
+		<%#= will_paginate @convFinal %>
 	</div>
 </div>

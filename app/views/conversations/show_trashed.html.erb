@@ -1,0 +1,66 @@
+<div style="background-color:#099;border:5px solid #fff;height:460px;float:left;margin-left:40px;">
+<div style="width:600px;border:1px solid #ccc;padding:20px;height:600px;">
+	<div style="float:left;">
+		<div style="font-size:12px;color:#ccc;float:left;">
+
+			Started by <b> <%= @conv.originator.email %> </b> 
+			<%= @creationDate %> 
+			<%= time_ago_in_words(@conv.created_at) %> ago
+		</div>
+		<div style="float:left;">
+			&nbsp;<h4 style="display:inline;"><%= @conv.subject %></h4>
+		</div>
+	</div>
+	<br/><br/><hr>
+	<% count = 0 %>
+	<% @receipts.each do |n| %>
+
+		<% if n.is_trashed? && n.receiver_id == current_user.id %>
+			<% count = count + 1 %>
+			
+			<div>
+			<!-- <div style="float:left;"> -->
+				<%#= image_tag User.find(n.sender_id).user_image(:thumb),:height=>50 %>
+			<!-- </div> -->
+				<div>
+
+					<a style="cursor:pointer;" class="slideoutmessage" target = <%= count %>>
+						<b>From: &nbsp;<%= User.find(n.notification.sender_id).email %>
+						</b> </a><br/>
+							
+					<div id="message<%= count %>" style="display:none;">
+						<div style="float:left;">Body: <%= n.notification.body %>
+						</div>
+								 
+						<div style="float:right;font-size:14px;color:red;">
+							<%= time_ago_in_words(n.updated_at) %> ago
+						</div> &nbsp;<br><br>
+						<div id="formmessage<%= count %>" style="display:none;">
+							&nbsp;&nbsp;
+						</div>
+					</div><br><br><hr>
+				</div><br/>
+		
+			</div>
+		<% end %>
+	<% end %>	
+<%#= render 'formMessage' %> 
+	<br/><br/>
+</div>
+</div>
+
+<script>
+	$(document).ready(function(){
+		$('.slideoutmessage').click(function(){
+			$('#message'+$(this).attr('target')).slideToggle("fast");
+		});
+	});
+</script>
+
+<script>
+	$(document).ready(function(){
+		$('.formmessageslideout').click(function(){
+			$('#formmessage'+$(this).attr('targetmessage')).slideToggle("fast");
+		});
+	});
+ </script>

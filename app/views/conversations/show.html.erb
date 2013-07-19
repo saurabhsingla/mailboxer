@@ -1,10 +1,10 @@
 <div style="background-color:#099;border:5px solid #fff;height:460px;float:left;margin-left:40px;">
-<!--  <b> Chat participants -> </b>
+ <!-- <b> Chat participants -> </b> -->
 	<%# @conv.recipients.each do |rec| %>
 	<%#= rec.email %>
 	<%# end %>
-<br/><br/><br/> -->
-<br/><br/>
+<!-- <br/><br/><br/> -->
+<!-- <br/><br/> -->
 
 <div style="width:600px;border:1px solid #ccc;padding:20px;height:600px;">
 	<div style="float:left;"><div style="font-size:12px;color:#ccc;float:left;">
@@ -17,14 +17,26 @@
 &nbsp;<h4 style="display:inline;"><%= @conv.subject %></h4>
 </div></div>
 <div style="float:right;">
-	<%= link_to image_tag("trash.png",:width=>30), trash_conversation_path(@conv.id), :method => :post %>
+	<%= link_to image_tag("trash.png",:width=>30), trash_conversation_path(@conv.id), 
+	:method => :post %>
 </div>
 
 
 <br/><br/><hr>
+<% count = 0 %>
+
+<%# @conv.receipts.each do |rec| %>
+	<%# if !rec.is_trashed? && rec.receiver_id == current_user.id %>
+		<%#= rec.notification.body %> <br/>
+
+	<%# end %>
+<%# end %>
+
 <%#= form_for :message, url:[:reply, conversation] do |f| %>
-<% @notif.each do |n| %>
-	<% if !n.is_trashed?(current_user) %>
+<% @conv.receipts.each do |n| %>
+
+	<% if !n.is_trashed? && n.receiver_id == current_user.id %>
+	<% count = count + 1 %>
 	
 	<div>
 		<!-- <div style="float:left;"> -->
@@ -32,41 +44,49 @@
 		<!-- </div> -->
 		<div>
 
-			<div id="slideoutmessage"><b>From: &nbsp;<%= User.find(n.sender_id).email %></b> </div><br/>
+			<a style="cursor:pointer;" class="slideoutmessage" target = <%= count %>>
+				<b>From: &nbsp;<%= User.find(n.notification.sender_id).email %></b> </a><br/>
 			<!-- <b>To: &nbsp; -->
 				<%# @conv.recipients.each do |rec| %>
 				<!-- <%#= rec.email %>,  -->
 				<%# end %>
 			<!-- </b>	 -->
 			 <!-- <br/> -->
-				<!-- Subject: <%= n.subject %> <br/> -->
-				<div id="message" style="display:none;">
-				<div style="float:left;">Body: <%= n.body %> </div>
+				<!-- Subject: <%= n.notification.subject %> <br/> -->
+				
+				<div id="message<%= count %>" style="display:none;">
+				<div style="float:left;">Body: <%= n.notification.body %> </div>
 				<div style="float:right;">
 					<%= link_to image_tag("trash.png",:width=>30), 
 					trashnotif_conversation_path(n), :method => :post, :params => {:notif_id => n} %>
-					<div style="display:inline" id="formmessageslideout"><img src="/assets/mail-reply.png"/ width="30"></div>	
+					<div style="display:inline" targetmessage="<%= count %>" class="formmessageslideout"><img src="/assets/mail-reply.png"/ width="30"></div>	
 				</div>
 				 
-				<div style="float:right;font-size:14px;color:#ccc;">
+				<div style="float:right;font-size:14px;color:red;">
 					<%= time_ago_in_words(n.updated_at) %> ago
 				</div> &nbsp;<br><br>
-		<div id="formmessage" style="display:none;">
-			<%#= text_field :body , :size => 150%>
-			<%#= text_area :body, :cols=>28, :rows=>3, :placeholder=>'Type your message here' 
-			%>
-			<%#= link_to 'Reply', replysingle_conversation_path, 
-			:params => {:conv_id => '2'} %>
-			<%= render 'formMessage' %>
+		<div id="formmessage<%= count %>" style="display:none;">
+			<%= form_tag (replysingleuser_conversation_path), :method => "post" do %>
+				<%= label_tag(:recipients, "To:") %>
+				<%= text_field_tag(:recipients) %> <br/>
+
+				<%= label_tag(:subject, "Subject:") %>
+				<%= text_field_tag(:subject) %> <br/>
+
+				<%= label_tag(:body, "Body:") %>
+				<%= text_area_tag :body %> <br/>
+				
+				<%= submit_tag "Reply" %>
+				<%= hidden_field_tag(:notif_id,n.id) %>			
+			<% end %>
+			
 			&nbsp;&nbsp;</div></div><br><br><hr>
 		</div><br/>
-	
-		
-<%# end %>
 	
 	</div>
 	<% end %>
 <% end %>	
+<%= render 'formMessage' %> 
 <br/><br/>
 <div>
 
@@ -78,8 +98,9 @@
 
 <script>
 $(document).ready(function(){
-	$('#slideoutmessage').click(function(){
-		$(this).find('#message').slideToggle("fast");
+
+	$('.slideoutmessage').click(function(){
+		$('#message'+$(this).attr('target')).slideToggle("fast");
 
 	});
 
@@ -90,12 +111,13 @@ $(document).ready(function(){
 
 <script>
 $(document).ready(function(){
-	$('#formmessageslideout').click(function(){
-		$(this).find('#formmessage').slideToggle("fast");
+
+	$('.formmessageslideout').click(function(){
+		$('#formmessage'+$(this).attr('targetmessage')).slideToggle("fast");
 
 	});
 
 
 });
 
-</script>
+ </script>

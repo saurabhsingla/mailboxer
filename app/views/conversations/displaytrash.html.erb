@@ -1,8 +1,77 @@
-<div style="float:left;margin-left:40px;">
-	<div style="width:400px;height:500px;padding-left:30px;border:1px solid #ccc">
-		<h2> Trash (<%= @countTrashConvUnread %>  unread conversations)</h2>
-		<%= render 'displayConversations' %>
-		<%= will_paginate @convs %>
-		<%= @abcd %>
+<div style="background-color:#099;float:left;margin-left:40px;">
+	<div style="width:850px;height:500px;padding-left:30px;border:1px solid #ccc">
+		<h2> Trash </h2>
+			<!-- (<%#= @countTrashConvUnread %>  unread conversations) -->
+		<%#= form_tag displaytrash_conversation_path do %>
+				<%#= text_field_tag(:search) %> 
+				<%#= submit_tag "Search" %>
+		<%# end %>
+		<%= form_tag displaytrash_conversation_path do %>
+				<%#= hidden_field_tag(:filter_param,'read') %>	
+				<%= submit_tag "Read",:name => 'read_button' %>
+		<%# end %>
+		<%#= form_tag displaytrash_conversation_path do %>
+				<%#= hidden_field_tag(:filter_param,'unread') %>	
+				<%= submit_tag "Unread",:name => 'unread_button' %><br/>
+		<% end %>
+		<%= form_tag deletepermanently_path, :method => :post do %>
+			<table border = '0', id = "conversations", class="display" >
+			<thead>
+				<tr>
+					<th width = "20px"></th>
+					<th width = "200px">Sender</th>
+					<th width = "400px", align = "center">Subject</th>
+					<th width = "00px"></th>
+					<th width = "100px"> </th> 
+				</tr>
+			</thead>
+			<tbody>
+				<% @convFinal.each do |conv| %>
+					<% bold = false %>
+					<% conv.receipts.each do |receipt| %>
+						<% if !receipt.is_read? && receipt.receiver_id == current_user.id %>
+							<% bold = true %>
+							<% break %>
+						<% end %>
+					<% end %>
+				<tr> 
+					<td> <input type ="checkbox" name = "conv_ids[]" value = <%= conv.id %> > </td> 
+					<td>
+						<% if bold %>
+							<b> <i> <%= link_to conv.last_sender.email, show_trashed_conversation_path(conv.id)  %> </i></b>
+						<% else %> 
+							<%= link_to conv.last_sender.email, show_trashed_conversation_path(conv.id)  %>
+						<% end %> 
+					</td> 
+					<td align = "left"> 
+						<% if bold %>
+							<b> <i> <%= link_to conv.subject, show_trashed_conversation_path(conv.id)  %> </i></b>
+						<% else %> 
+							<%= link_to conv.subject, show_trashed_conversation_path(conv.id)  %>
+						<% end %>
+					</td>
+					<td > <%= link_to 'untrash', untrash_conversation_path(conv.id), :method => :post  %> </td>
+					<% conv.receipts.all(:order => 'created_at DESC').each do |rec| %> 
+						<% if rec.is_trashed? && rec.receiver_id == current_user.id %>
+							<td align = "center">
+								<div style = "float:right; color:grey; font-size:14px; 
+								font-style:italic">
+									<%#= time_ago_in_words(rec.created_at) %> 
+									<%= time_ago_in_words(conv.updated_at) %> ago
+									<% break %>
+								</div>
+							</td>
+						<% end %>
+					<% end %>
+				</tr>
+				<% end %>
+				<%= submit_tag "Permanently Delete Selected", :name => 'deletepermanently' %>
+				<%= submit_tag "Empty Trash", :name => 'emptytrash' %>
+			</tbody>
+			</table>
+		<% end %>
+		<%#= will_paginate @convFinal %>
+		<%# @convs %>
+		<%#= @abcd %>
 	</div>
 </div>
