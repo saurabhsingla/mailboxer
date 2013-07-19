@@ -79,7 +79,7 @@
 <script>
 $(document).ready(function(){
 	$('#slideoutmessage').click(function(){
-		$('#message').slideToggle("fast");
+		$(this).find('#message').slideToggle("fast");
 
 	});
 
@@ -90,8 +90,8 @@ $(document).ready(function(){
 
 <script>
 $(document).ready(function(){
-	$('div#formmessageslideout').click(function(){
-		$('div#formmessage').slideToggle("fast");
+	$('#formmessageslideout').click(function(){
+		$(this).find('#formmessage').slideToggle("fast");
 
 	});
 
