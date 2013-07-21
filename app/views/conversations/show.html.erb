@@ -68,7 +68,7 @@
 		<div id="formmessage<%= count %>" style="display:none;">
 			<%= form_tag (replysingleuser_conversation_path), :method => "post" do %>
 				<div style="display:none" id="recp<%= count %>" ><%= label_tag(:recipients, "To:") %>
-				<%= text_field_tag(:recipients) %></div><a href="#" class="addrecp" targetrecp="<%= count %>">Add Recepients</a> <br/>
+				<%= text_field_tag(:recipients, User.find(n.notification.sender_id).email) %></div><a href="#" class="addrecp" targetrecp="<%= count %>">Add Recepients</a> <br/>
 
 				<div style="display:none;" id="sub<%= count %>"><%= label_tag(:subject, "Subject:") %>
 				<%= text_field_tag(:subject) %> </div><a href="#" class="addsub" targetsub="<%= count %>">Add Subject</a><br/>
