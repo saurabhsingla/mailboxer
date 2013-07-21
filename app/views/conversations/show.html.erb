@@ -1,4 +1,4 @@
-<div style="background-color:#099;border:5px solid #fff;height:460px;float:left;margin-left:40px;">
+<div style="background-color:#000;opacity:.6;box-shadow:2px 2px 2px #fff;border:5px solid #fff;float:left;margin-left:40px;">
  <!-- <b> Chat participants -> </b> -->
 	<%# @conv.recipients.each do |rec| %>
 	<%#= rec.email %>
@@ -67,17 +67,17 @@
 				</div> &nbsp;<br><br>
 		<div id="formmessage<%= count %>" style="display:none;">
 			<%= form_tag (replysingleuser_conversation_path), :method => "post" do %>
-				<%= label_tag(:recipients, "To:") %>
-				<%= text_field_tag(:recipients) %> <br/>
+				<div style="display:none" id="recp<%= count %>" ><%= label_tag(:recipients, "To:") %>
+				<%= text_field_tag(:recipients) %></div><a href="#" class="addrecp" targetrecp="<%= count %>">Add Recepients</a> <br/>
 
-				<%= label_tag(:subject, "Subject:") %>
-				<%= text_field_tag(:subject) %> <br/>
-
+				<div style="display:none;" id="sub<%= count %>"><%= label_tag(:subject, "Subject:") %>
+				<%= text_field_tag(:subject) %> </div><a href="#" class="addsub" targetsub="<%= count %>">Add Subject</a><br/>
+				<div class="formfields">
 				<%= label_tag(:body, "Body:") %>
-				<%= text_area_tag :body %> <br/>
-				
+				<%= text_area_tag :body %></div> <br/>
+				<div align="right">
 				<%= submit_tag "Reply" %>
-				<%= hidden_field_tag(:notif_id,n.id) %>			
+				<%= hidden_field_tag(:notif_id,n.id) %>	</div>		
 			<% end %>
 			
 			&nbsp;&nbsp;</div></div><br><br><hr>
@@ -121,3 +121,23 @@ $(document).ready(function(){
 });
 
  </script>
+
+
+ <script>
+ 	$('.addrecp').click(function(){
+ 		$('#recp'+$(this).attr('targetrecp')).show();
+ 		$(this).hide();
+
+ 	});
+
+ </script>
+
+  <script>
+ 	$('.addsub').click(function(){
+ 		$('#sub'+$(this).attr('targetsub')).show();
+ 		$(this).hide();
+
+ 	});
+
+ </script>
+
