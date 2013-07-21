@@ -39,3 +39,7 @@
   tr.even td.sorting_1{
  	background: none !important;
  }
+
+.formfields * {
+	vertical-align: middle;
+}
