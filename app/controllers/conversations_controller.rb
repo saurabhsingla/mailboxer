@@ -226,7 +226,7 @@ class ConversationsController < ApplicationController
 			@rec_emails = params[:recipients].split(',')
 			@rec = User.where(email: @rec_emails).all
 			if params[:subject].empty?
-				debugger
+				# debugger
 				current_user.reply(currconversation,@rec,params[:body] )
 			else
 				current_user.reply(currconversation,@rec,params[:body],
