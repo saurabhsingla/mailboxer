@@ -71,7 +71,7 @@
 				<%= text_field_tag(:recipients, User.find(n.notification.sender_id).email) %></div><a href="#" class="addrecp" targetrecp="<%= count %>">Add Recepients</a> <br/>
 
 				<div style="display:none;" id="sub<%= count %>"><%= label_tag(:subject, "Subject:") %>
-				<%= text_field_tag(:subject) %> </div><a href="#" class="addsub" targetsub="<%= count %>">Add Subject</a><br/>
+				<%= text_field_tag(:subject, n.notification.subject) %> </div><a href="#" class="addsub" targetsub="<%= count %>">Add Subject</a><br/>
 				<div class="formfields">
 				<%= label_tag(:body, "Body:") %>
 				<%= text_area_tag :body %></div> <br/>
