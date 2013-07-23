@@ -8,6 +8,7 @@ Newmailboxer::Application.routes.draw do
       post 'reply'
       post 'move_to_trash'
       post 'replysingleuser'
+      post 'forward'
       get 'show_trashed'
       post 'trashnotif'
       # get 'replysingle'

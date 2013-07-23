@@ -59,7 +59,8 @@
 				<div style="float:right;">
 					<%= link_to image_tag("trash.png",:width=>30), 
 					trashnotif_conversation_path(n), :method => :post, :params => {:notif_id => n} %>
-					<div style="display:inline" targetmessage="<%= count %>" class="formmessageslideout"><img src="/assets/mail-reply.png"/ width="30"></div>	
+					<div style="display:inline" targetmessage="<%= count %>" class="formmessageslideout"><img src="/assets/mail-reply.png"/ width="30"></div>
+					<div style="display:inline" targetmessage="<%= count %>" class="formmessageforwardslideout">Forward</div>	
 				</div>
 				 
 				<div style="float:right;font-size:14px;color:red;">
@@ -79,8 +80,29 @@
 				<%= submit_tag "Reply" %>
 				<%= hidden_field_tag(:notif_id,n.id) %>	</div>		
 			<% end %>
+		</div>
+
+		<div id="formmessageforward<%= count %>" style="display:none;">
 			
-			&nbsp;&nbsp;</div></div><br><br><hr>
+			&nbsp;&nbsp;
+			<%= form_tag (replysingleuser_conversation_path), :method => "post" do %>
+				<div><%= label_tag(:recipients, "To:") %>
+				<%= text_field_tag(:recipients) %></div>
+				<!-- <a href="#" class="addrecp" targetrecp="<%= count %>">Add Recepients</a> <br/> -->
+
+				<div><%= label_tag(:subject, "Subject:") %>
+				<%= text_field_tag(:subject, n.notification.subject) %> </div> <br/>
+				<div class="formfields">
+				<%= label_tag(:body, "Body:") %>
+				<%= text_area_tag :body, n.notification.body %></div> <br/>
+				<div align="right">
+				<%= submit_tag "Forward" %>
+				<%= hidden_field_tag(:notif_id,n.id) %>	</div>		
+			<% end %>
+		</div>
+
+
+	</div><br><br><hr>
 		</div><br/>
 	
 	</div>
@@ -114,6 +136,10 @@ $(document).ready(function(){
 
 	$('.formmessageslideout').click(function(){
 		$('#formmessage'+$(this).attr('targetmessage')).slideToggle("fast");
+
+	});
+	$('.formmessageforwardslideout').click(function(){
+		$('#formmessageforward'+$(this).attr('targetmessage')).slideToggle("fast");
 
 	});
 

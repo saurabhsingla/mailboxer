@@ -10,8 +10,9 @@ jQuery ->
 	"aaSorting": []
 	"aoColumnDefs": [
       { "bVisible": false, "aTargets": [ ] }
-      { "bSortable": false, "aTargets": [ 0,3,4 ] }
-      { "bSearchable": false, "aTargets": [ 4 ] }       
+      { "bSortable": false, "aTargets": [ 0,3 ] }
+      { "bSearchable": false, "aTargets": [ 4 ] }   
+      { "sType": 'time-sort', "aTargets": [ 4 ] }
     ]
    
 	});
