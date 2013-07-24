@@ -31,7 +31,6 @@
 
 	<%# end %>
 <%# end %>
-
 <%#= form_for :message, url:[:reply, conversation] do |f| %>
 <% @conv.receipts.each do |n| %>
 
@@ -54,7 +53,8 @@
 			 <!-- <br/> -->
 				<!-- Subject: <%= n.notification.subject %> <br/> -->
 				
-				<div id="message<%= count %>" style="display:none;">
+				<div id="message<%= count %>" style="
+					<% if (n.notification != @conv.last_message) && (n.notification != @conv.original_message) %> display:none; <% end %>">
 				<div style="float:left;">Body: <%= n.notification.body %> </div>
 				<div style="float:right;">
 					<%= link_to image_tag("trash.png",:width=>30), 
