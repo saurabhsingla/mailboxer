@@ -18,7 +18,13 @@ class ConversationsController < ApplicationController
 	def displayinbox
 			# session[:box] = "inbox"
 			@people = []
-			@convs = current_user.mailbox.inbox(:order => "created_at DESC")
+			@convs = current_user.mailbox.inbox
+			convtest = @convs[0]
+			# rectest = convtest.receipts(:conditions => ['mailbox_type = (?)',"inbox"]).last
+			# rectest = convtest.receipts.where('mailbox_type = ? and receiver_id = ?','inbox', current_user.id)
+			# debugger
+			@convs = @convs.sort_by! {|c| (c.receipts(current_user).where('mailbox_type = ? and receiver_id = ?','inbox',current_user.id).last.created_at)}.reverse
+			# @convs = @convs.reverse
 			# @countInboxConvUnread = 0
 			@convFinal = []
 			# if params[:filter_param].nil?
@@ -91,6 +97,7 @@ class ConversationsController < ApplicationController
 		# session[:box] = "sentbox"
 		# @search = params[:search]
 		@convs = current_user.mailbox.sentbox(:order => 'updated_at DESC')
+		@convs = @convs.sort_by! {|c| (c.receipts.where('mailbox_type = ? and receiver_id = ?','sentbox',current_user.id).last.created_at)}.reverse
 		@convFinal = []
 		# @countSentboxConvUnread = 0
 		# if params[:filter_param].nil?

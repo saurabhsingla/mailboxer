@@ -51,12 +51,12 @@
 						
 							<td align = "center">
 								<div style = "float:right; color:grey; font-size:14px; font-style:italic">
-									<% conv.receipts.all(:order => 'created_at DESC').each do |rec| %> 
-										<% if !rec.is_trashed? && rec.receiver_id == current_user.id %>
-											<%= time_ago_in_words(conv.updated_at) %> ago
-											<% break %>
-										<% end %>
-									<% end %>
+									<%# conv.receipts.all(:order => 'created_at DESC').each do |rec| %> 
+										<%# if !rec.is_trashed? && rec.receiver_id == current_user.id %>
+											<%= time_ago_in_words(conv.receipts.where('mailbox_type = ? and receiver_id = ?','inbox', current_user.id).last.created_at) %> ago
+											<%# break %>
+										<%# end %>
+									<%# end %>
 
 
 									<!-- <%#= time_ago_in_words(conv.updated_at) %> ago -->
