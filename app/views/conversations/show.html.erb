@@ -32,9 +32,15 @@
 	<%# end %>
 <%# end %>
 <%#= form_for :message, url:[:reply, conversation] do |f| %>
-<% @conv.receipts.each do |n| %>
+<% @conv.receipts.all(:order => 'updated_at ASC').each do |n| %>
 
 	<% if !n.is_trashed? && n.receiver_id == current_user.id %>
+	<%# if (session[:box] == "inbox" && ( n.notification != @conv.last_message || 
+	n.mailbox_type != 'sentbox')) || (session[:box] == "sentbox" && 
+	( n.notification != @conv.last_message ||
+	n.mailbox_type != 'inbox'))  %>
+
+	
 	<% count = count + 1 %>
 	
 	<div>
@@ -106,6 +112,7 @@
 		</div><br/>
 	
 	</div>
+	<%# end %>
 	<% end %>
 <% end %>	
 <%= render 'formMessage' %> 

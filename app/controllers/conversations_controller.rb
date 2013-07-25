@@ -16,6 +16,7 @@ class ConversationsController < ApplicationController
 	end
 
 	def displayinbox
+			# session[:box] = "inbox"
 			@people = []
 			@convs = current_user.mailbox.inbox(:order => "created_at DESC")
 			# @countInboxConvUnread = 0
@@ -87,6 +88,7 @@ class ConversationsController < ApplicationController
 	end
 
 	def displaysentbox
+		# session[:box] = "sentbox"
 		# @search = params[:search]
 		@convs = current_user.mailbox.sentbox(:order => 'updated_at DESC')
 		@convFinal = []
@@ -200,8 +202,11 @@ class ConversationsController < ApplicationController
 				receipt.save				
 			end
 		end
+		# debugger
+		# @conv = @conv - @conv.last_message
+		# debugger
 		
-		@notif = Notification.where(:conversation_id => params[:id])
+		# @notif = Notification.where(:conversation_id => params[:id])
 	end
 
 	# to reply on a conversation
