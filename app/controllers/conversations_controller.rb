@@ -20,25 +20,10 @@ class ConversationsController < ApplicationController
 			@people = []
 			@convs = current_user.mailbox.inbox
 			convtest = @convs[0]
-			# rectest = convtest.receipts(:conditions => ['mailbox_type = (?)',"inbox"]).last
-			# rectest = convtest.receipts.where('mailbox_type = ? and receiver_id = ?','inbox', current_user.id)
-			# debugger
 			@convs = @convs.sort_by! {|c| (c.receipts(current_user).where('mailbox_type = ? and receiver_id = ?','inbox',current_user.id).last.created_at)}.reverse
-			# @convs = @convs.reverse
-			# @countInboxConvUnread = 0
+
 			@convFinal = []
-			# if params[:filter_param].nil?
-			# 	@convFinal = @convs
-				# @convs.each do |inbox|
-				# 	# coderefactor - make one loop and put condition inside in all inbox,sentbox and trash
-				# 	inbox.receipts.each do |receipt|
-				# 		if !receipt.is_read? && receipt.receiver_id == current_user.id
-				# 			@countInboxConvUnread = @countInboxConvUnread + 1
-				# 			# @convFinal.push(inbox)
-				# 			break
-				# 		end
-				# 	end
-				# end
+
 			if params[:unread_button]	
 			# elsif params[:filter_param] == 'unread'
 				@convs.each do |inbox|
@@ -50,11 +35,6 @@ class ConversationsController < ApplicationController
 							break
 						end
 					end
-					# if @search == nil 
-					# 	@convFinal = @convs
-					# elsif inbox.subject.include? @search
-					# 	@convFinal.push(inbox)
-					# end		
 				end
 			elsif params[:read_button]
 			# elsif params[:filter_param] == 'read'
@@ -70,7 +50,6 @@ class ConversationsController < ApplicationController
 			else
 				@convFinal = @convs
 			end	
-			# @convFinal = @convFinal.paginate(:page => params[:page], :per_page => 10)
 
 	end
 
@@ -112,11 +91,6 @@ class ConversationsController < ApplicationController
 						break
 					end
 				end		
-				# if @search == nil 
-				# 		@convFinal = @convs
-				# 	elsif sentbox.subject.include? @search
-				# 		@convFinal.push(sentbox)				
-				# end	
 			end
 		elsif params[:read_button]
 			@convFinal = @convs
@@ -177,21 +151,7 @@ class ConversationsController < ApplicationController
 				@convFinal = @convs
 			end
 					
-			# @convs.each do |trash|
-			# 	trash.receipts.each do |receipt|
-			# 		if !receipt.is_read? && receipt.receiver_id == current_user.id
-			# 			@countTrashConvUnread = @countTrashConvUnread + 1
-			# 			break
-			# 		end
-			# 	end
-				# if @search == nil 
-				# 	@convFinal = @convs
-				# elsif trash.subject.include? @search
-				# 	@convFinal.push(trash)				
-				# end	
-			# end
 		end
-		# @convFinal = @convFinal.paginate(:page => params[:page], :per_page => 10)
 	end
 
 	# to show a particular conversation details
@@ -209,11 +169,6 @@ class ConversationsController < ApplicationController
 				receipt.save				
 			end
 		end
-		# debugger
-		# @conv = @conv - @conv.last_message
-		# debugger
-		
-		# @notif = Notification.where(:conversation_id => params[:id])
 	end
 
 	# to reply on a conversation
@@ -280,29 +235,40 @@ class ConversationsController < ApplicationController
 	# to trash a particular conversation
 	def trash
 		# debugger
+		conversationsSelected = params[:conv_ids]
+		# the selected conversations are to be trashed
+		if params[:trashselected]
+			if !conversationsSelected.nil?
+				dateTime = Time.new
+				conversationsSelected.each do |conversation_id|
+					conversation = Conversation.find(conversation_id)
+			    	conversation.move_to_trash(current_user)
+					conversation.update_column(:lasttrashed_at, dateTime.to_time)
+					conversation.receipts.each do |receiptToBeDeleted|
+							receiptToBeDeleted.updated_at = dateTime.to_time
+							receiptToBeDeleted.save
+					end
 
-		conversationsToBeTrashed = params[:conv_ids]
-		if !conversationsToBeTrashed.nil?
-			dateTime = Time.new
-			conversationsToBeTrashed.each do |conversation_id|
-				conversation = Conversation.find(conversation_id)
-				# debugger
-		    	conversation.move_to_trash(current_user)
-		  #   	conversation.lasttrashed_at = dateTime.to_time
-				# conversation.save
-				# debugger
-				conversation.update_column(:lasttrashed_at, dateTime.to_time)
-				# debugger
-				conversation.receipts.each do |receiptToBeDeleted|
-					# if receiptToBeDeleted.receiver_id = current_user.id
-						# receiptToBeDeleted.move_to_trash
-						receiptToBeDeleted.updated_at = dateTime.to_time
-
-						receiptToBeDeleted.save
-					# end
+			    end
+			end
+		elsif params[:markasread]
+			# the selected conversations are to be marked as read
+			if !conversationsSelected.nil?
+				conversationsSelected.each do |conversation_id|
+					conversation = Conversation.find(conversation_id)
+					conversation.mark_as_read(current_user)
 				end
 
-		    end
+			end
+		elsif params[:markasunread]
+			# the selected conversations are to be marked as read
+			if !conversationsSelected.nil?
+				conversationsSelected.each do |conversation_id|
+					conversation = Conversation.find(conversation_id)
+					conversation.mark_as_unread(current_user)
+				end
+
+			end
 		end
 
 	    # Completely delete the conversation if all the participants of the conversation have
@@ -360,9 +326,7 @@ class ConversationsController < ApplicationController
   				end
 			end
   		end
-  		# n.is_trashed? && n.receiver_id == current_user.id
   		
-  		# conversation.delete(current_user)
   		redirect_to :displaytrash_conversation
   	end
 
