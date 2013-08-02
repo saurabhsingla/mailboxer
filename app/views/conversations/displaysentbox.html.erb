@@ -19,7 +19,7 @@
 				<thead>
 					<tr>
 						<th width = "20px"></th>
-						<th width = "200px">Sender</th>
+						<th width = "200px">To</th>
 						<th width = "400px", align = "center">Subject</th>
 						<th width = "00px"></th>
 						<th width = "100px" > </th> 
@@ -44,12 +44,39 @@
 								<%# if %>
 								</td> 
 							<td>
-								<% if bold %>
-									<b><i> <%= link_to conv.last_sender.email, conversation_path(conv.id)  %> </i>
-									</b>
-								<% else %> 
-									<%= link_to conv.last_sender.email, conversation_path(conv.id)  %>
-								<% end %> 
+								<%# recarr = [] %>
+								<%# conv.recipients.each do |rec| %>
+										
+									<%# recarr.push(rec.email) %>
+									<%# recarr.push(',') %>
+								<%# end %>
+								<% recarr = [] %>
+								<% count = 0 %>	
+								<% conv.receipts.each do |rec| %>
+									<% recUser = User.find(rec.receiver_id) %>
+														
+									<% if rec.mailbox_type == 'inbox' && !recarr.include?(recUser) %>
+										<% if count != 0 %>
+										,
+										<% end %>
+										<% count = count + 1 %>
+										<% recemail = recUser.email %>
+										<% if recUser == current_user %>
+											<% recemail = 'me' %>
+										<% end %>
+										<% if bold %>
+											<b><i> <%= link_to recemail, conversation_path(conv.id)  %> 
+											</i>
+											</b>
+										<% else %> 
+											<%= link_to recemail, conversation_path(conv.id)  %>
+										<% end %>										
+									<% end %>
+									<% unless recarr.include?(recUser) %>
+									   	<% recarr << recUser %>
+									<% end %>
+								<% end %>
+								
 							</td> 
 							<td align = "left"> 
 								<% if bold %>

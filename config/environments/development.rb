@@ -54,6 +54,16 @@ Newmailboxer::Application.configure do
 #     :user_name          => 'saurabh.singla@intuzion.com',
 #     :password           => 'qwerty@123'
 # }
+config.after_initialize do
+  Bullet.enable = false
+  Bullet.alert = false
+  Bullet.bullet_logger = false
+  Bullet.console = true
+  
+  Bullet.rails_logger = false
+  # Bullet.airbrake = true
+end
+
 
 config.action_mailer.default_url_options = { :host => 'localhost:3000' }
 #config.action_mailer.delivery_method = :smtp
@@ -74,10 +84,20 @@ ActionMailer::Base.smtp_settings = {
 :port => 587,
 :authentication => :plain,
 :domain => 'intuzion.com',
-:user_name => 'saurabh.singla@intuzion.com',
-:password => 'qwerty@123',
+:user_name => ENV["EMAIL"],
+:password => ENV["PASSWORD"],
 :authentication => 'plain',
 :enable_starttls_auto => true
 }
+# ActionMailer::Base.smtp_settings = {
+# :address => "smtp.mandrillapp.com",
+# :port => 25,
+# :authentication => :plain,
+# :domain => 'intuzion.com',
+# :user_name => 'saurabh.singla@intuzion.com',
+# :password => '',
+# :authentication => 'plain',
+# :enable_starttls_auto => true
+# }
 
 end

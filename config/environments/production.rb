@@ -80,8 +80,8 @@ ActionMailer::Base.smtp_settings = {
 :port => 587,
 :authentication => :plain,
 :domain => 'intuzion.com',
-:user_name => 'saurabh.singla@intuzion.com',
-:password => 'qwerty@123',
+:user_name => ENV["EMAIL"],
+:password => ENV["PASSWORD"],
 :authentication => 'plain',
 :enable_starttls_auto => false
 }

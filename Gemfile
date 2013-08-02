@@ -47,6 +47,8 @@ gem 'will_paginate'
 group :development do
 	gem 'better_errors'
 	gem 'meta_request'
+	gem 'bullet'
+	gem 'brakeman'
 end
 
 # To use ActiveModel has_secure_password
